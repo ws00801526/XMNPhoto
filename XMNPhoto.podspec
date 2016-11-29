@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'XMNPhoto'
-  s.version          = '0.0.1'
+  s.version          = '1.1.0'
   s.summary          = 'XMNPhoto 图片相关集合工具包含图片选择列库, 基于YYWebImage封装的一款简单的图片浏览类库'
   s.homepage         = 'https://github.com/<GITHUB_USERNAME>/XMNPhoto'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'

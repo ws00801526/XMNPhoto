@@ -8,6 +8,16 @@
 ### 相关bug修复
 
 
+##### v1.1.0
+
+1. 工程结构改变
+2. 增加pod 使用方法
+3. `pod 'XMNPhoto'` 默认Picker,Browser
+4. 单独使用
+	* 单独使用picker  `pod 'XMNPhoto/Picker'`
+	* 单独使用Browser `pod 'XMNPhoto/Browser'`
+
+
 ##### V1.0.4
 
 1. 增加了一个基于[YYWebImage](https://github.com/ibireme/YYWebImage)框架封装的图片浏览器 **XMNPhotoBrowser** -- 强烈推荐学习下[ibireme](https://github.com/ibireme)大神的其他框架
