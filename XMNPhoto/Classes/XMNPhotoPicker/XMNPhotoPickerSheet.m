@@ -396,16 +396,12 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
                         *stop = (tempAssets.count > self.maxPreviewCount);
                     }];
                     self.assets = [NSArray arrayWithArray:tempAssets];
-                    /** 卡顿应该是此处 初始化造成的,先放到子线程里面去做 */
-                    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    dispatch_async(dispatch_get_main_queue(), ^{
                         __strong typeof(*&wSelf) self = wSelf;
                         [(XMNPhotoStickLayout *)self.collectionView.collectionViewLayout updateAllAttributes];
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            __strong typeof(*&wSelf) self = wSelf;
-                            [self.collectionView reloadData];
-                            self.loadingView.hidden = YES;
-                            [self.loadingView stopAnimating];
-                        });
+                        [self.collectionView reloadData];
+                        self.loadingView.hidden = YES;
+                        [self.loadingView stopAnimating];
                     });
                 }];
             }
@@ -474,6 +470,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
     
     XMNPhotoPickerController *photoPickerController = [[XMNPhotoPickerController alloc] initWithMaxCount:self.maxCount delegate:nil];
     __weak typeof(*&self) wSelf = self;
+    
     [photoPickerController setDidFinishPickingPhotosBlock:^(NSArray<UIImage *> *images, NSArray<XMNAssetModel *> *assets) {
         __weak typeof(*&self) self = wSelf;
         self.didFinishPickingPhotosBlock ?self.didFinishPickingPhotosBlock(images,assets) : nil;
@@ -486,7 +483,10 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         [self.parentController dismissViewControllerAnimated:YES completion:nil];
         [self hideAnimated:YES];
     }];
-    [self.parentController presentViewController:photoPickerController animated:YES completion:nil];
+    [self.parentController presentViewController:photoPickerController animated:YES completion:^{
+        __strong typeof(*&wSelf) self = wSelf;
+        [self hideAnimated:NO];
+    }];
 }
 
 - (void)showImageCameraController {
@@ -547,7 +547,6 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
     
     XMNPhotoPickerCell *pickerCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"XMNPhotoPickerCell" forIndexPath:indexPath];
     pickerCell.imageView.image = self.assets[indexPath.row].previewImage;
-    
     
     if ([XMNPhotoPickerOption isPanGestureEnabled]) {
 
@@ -656,7 +655,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         [previewC setDidFinishPreviewBlock:^(NSArray<XMNAssetModel *> *selectedAssets) {
             
             __weak typeof(*&self) self = wSelf;
-            self.hidden = NO;
+            [self showAnimated:YES];
             self.selectedAssets = [NSMutableArray arrayWithArray:selectedAssets];
             [self updatePhotoLibraryButton];
             [self.collectionView reloadData];
@@ -666,14 +665,12 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         [previewC setDidFinishPickingBlock:^(NSArray<UIImage *> *images, NSArray<XMNAssetModel *> *assets) {
             
             __weak typeof(*&self) self = wSelf;
-            self.hidden = NO;
             [self.selectedAssets removeAllObjects];
             self.didFinishPickingPhotosBlock ? self.didFinishPickingPhotosBlock(images,assets) : nil;
             [self hideAnimated:NO];
             [self.parentController dismissViewControllerAnimated:YES completion:nil];
         }];
-        
-        self.hidden = YES;
+        [self hideAnimated:YES];
         [self.parentController presentViewController:previewC animated:YES completion:nil];
     }
     

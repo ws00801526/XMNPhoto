@@ -24,6 +24,13 @@
 @implementation XMNAssetCell
 @synthesize asset = _asset;
 
+- (void)prepareForReuse {
+    
+    [super prepareForReuse];
+    self.photoStateButton.hidden = NO;
+    [self.superview sendSubviewToBack:self];
+}
+
 #pragma mark - Methods
 
 /// ========================================

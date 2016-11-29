@@ -52,6 +52,9 @@ NSString *const kXMNStickSupplementaryViewKind = @"com.XMFraker.XMNStickLayout.k
 
 - (void)updateAllAttributes {
     
+    [self.itemAttributesArrayM removeAllObjects];
+    [self.supplementaryViewAttributesArrayM removeAllObjects];
+    
     self.originX = self.sectionInset.left;
     self.originY = self.sectionInset.top;
     
@@ -66,15 +69,19 @@ NSString *const kXMNStickSupplementaryViewKind = @"com.XMFraker.XMNStickLayout.k
         
         UICollectionViewLayoutAttributes *supplementaryViewAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:kXMNStickSupplementaryViewKind withIndexPath:indexPath];
         supplementaryViewAttributes.frame = CGRectMake(self.originX, self.sectionInset.top, self.headerReferenceSize.width, self.headerReferenceSize.height);
+        /** !!! BUG Fixed  修复supplementaryView 时而隐藏的问题,view在cell后方 未显示*/
+        supplementaryViewAttributes.zIndex = 999;
         
         [self.itemAttributesArrayM addObject:cellAttributes];
         [self.supplementaryViewAttributesArrayM addObject:supplementaryViewAttributes];
         
         self.originX += itemSize.width;
         self.originX += self.minimumLineSpacing;
-        
         self.originY = MAX(itemSize.height, self.originY);
     }
+    
+    NSLog(@" this is item AttributeCount :%@",self.itemAttributesArrayM);
+    NSLog(@" this is item supplementary :%@",self.supplementaryViewAttributesArrayM);
 }
 
 
@@ -100,7 +107,10 @@ NSString *const kXMNStickSupplementaryViewKind = @"com.XMFraker.XMNStickLayout.k
         }
     }];
 
-    return [self.itemAttributesArrayM arrayByAddingObjectsFromArray:self.supplementaryViewAttributesArrayM];
+    NSMutableArray *array = [NSMutableArray arrayWithArray:self.itemAttributesArrayM];
+    [array addObjectsFromArray:self.supplementaryViewAttributesArrayM];
+    return [NSArray arrayWithArray:array];
+//    return [self.itemAttributesArrayM arrayByAddingObjectsFromArray:self.supplementaryViewAttributesArrayM];
 }
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {

@@ -148,6 +148,7 @@
 }
 
 - (void)didCancelPickingPhoto {
+    
     if (self.photoPickerDelegate && [self.photoPickerDelegate respondsToSelector:@selector(photoPickerControllerDidCancel:)]) {
         [self.photoPickerDelegate photoPickerControllerDidCancel:self];
     }
@@ -263,7 +264,6 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     XMNPhotoPickerController *photoPickerVC = (XMNPhotoPickerController *)self.navigationController;
     [photoPickerVC didCancelPickingPhoto];
-    
 }
 
 
