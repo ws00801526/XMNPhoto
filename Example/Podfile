@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'XMNPhoto_Example' do
+  pod 'XMNPhoto', :path => '../'
+
+  target 'XMNPhoto_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
