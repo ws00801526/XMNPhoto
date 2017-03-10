@@ -23,8 +23,6 @@
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		972651061DED5525006C1FBF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		972651071DED5529006C1FBF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
-		9726515E1DED69D3006C1FBF /* XMNPhoto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 972651011DED54F6006C1FBF /* XMNPhoto.framework */; };
-		9726515F1DED69D3006C1FBF /* XMNPhoto.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 972651011DED54F6006C1FBF /* XMNPhoto.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,20 +34,6 @@
 			remoteInfo = XMNPhoto;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		972651601DED69D3006C1FBF /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				9726515F1DED69D3006C1FBF /* XMNPhoto.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		185D1158256F1C5B4BE8E868 /* Pods_XMNPhoto_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XMNPhoto_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,7 +76,6 @@
 				972651071DED5529006C1FBF /* Foundation.framework in Frameworks */,
 				972651061DED5525006C1FBF /* UIKit.framework in Frameworks */,
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
-				9726515E1DED69D3006C1FBF /* XMNPhoto.framework in Frameworks */,
 				6179A1A01AD5E3671F5527F3 /* Pods_XMNPhoto_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,7 +208,6 @@
 				6003F588195388D20070C39A /* Resources */,
 				AB07F557AD58BE7F06A5C16A /* [CP] Embed Pods Frameworks */,
 				163FFA7A14F7374DCCA2FAF5 /* [CP] Copy Pods Resources */,
-				972651601DED69D3006C1FBF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

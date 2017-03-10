@@ -6,6 +6,5 @@ target 'XMNPhoto_Example' do
   target 'XMNPhoto_Tests' do
     inherit! :search_paths
 
-    
   end
 end

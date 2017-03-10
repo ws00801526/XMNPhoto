@@ -57,7 +57,7 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
 
 - (void)viewWillAppear:(BOOL)animated {
     
-    [super viewWillAppear:animated];
+    [super viewWillAppear:animated]; 
     /** 出现时 滚到到指定的index */
     if (self.photos && self.photos.count > self.currentItemIndex) {
         
