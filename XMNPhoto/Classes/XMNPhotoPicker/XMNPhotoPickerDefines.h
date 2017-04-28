@@ -32,4 +32,8 @@
 #define kXMNCancel  999
 #define kXMNConfirm 998
 
+#if __has_include(<Photos/Photos.h>)
+    #define kXMNPhotosAvailable 1
+#endif
+
 #endif /* XMNPhotoPickerDefines_h */

@@ -7,26 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVPlayerItem.h>
+#import <XMNPhoto/XMNPhotoPickerDefines.h>
 
-/** 8.0+ 使用Photos类库 */
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
+#ifdef kXMNPhotosAvailable
     #import <Photos/Photos.h>
+#else
+    #import <AssetsLibrary/AssetsLibrary.h>
 #endif
-#import <AssetsLibrary/AssetsLibrary.h>
+
 
 @class XMNAlbumModel;
 @class XMNAssetModel;
 @interface XMNPhotoManager : NSObject
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-    @property (nonatomic, strong, readonly)  PHCachingImageManager * _Nullable cachingImageManager;
-#endif
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored"-Wdeprecated-declarations"
+#ifdef kXMNPhotosAvailable
+@property (nonatomic, strong, readonly)  PHCachingImageManager * _Nullable cachingImageManager;
+#else
 @property (nonatomic, strong, readonly)  ALAssetsLibrary * _Nullable assetLibrary;
-#pragma clang diagnostic pop
-
+#endif
 
 /**
  *  判断用户是否打开了图片授权
@@ -144,7 +143,6 @@
  */
 - (void)getVideoInfoWithAsset:(id _Nonnull)asset
               completionBlock:(void(^ _Nonnull)(AVPlayerItem * _Nullable playerItem,NSDictionary * _Nullable playetItemInfo))completionBlock;
-
 
 
 #pragma mark - Class Methods

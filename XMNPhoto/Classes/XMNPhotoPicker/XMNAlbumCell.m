@@ -30,7 +30,6 @@
     self.albumCoverImageView.layer.masksToBounds = YES;
 }
 
-
 #pragma mark - Methods
 
 - (void)configCellWithItem:(XMNAlbumModel * _Nonnull)item {
@@ -43,14 +42,14 @@
     __weak typeof(*&self) wSelf = self;
 
     
-#if defined(iOS8Later)
+#ifdef kXMNPhotosAvailable
+
     [[XMNPhotoManager sharedManager] getThumbnailWithAsset:[item.fetchResult lastObject] size:kXMNThumbnailSize completionBlock:^(UIImage *image) {
         __weak typeof(*&self) self = wSelf;
         self.albumCoverImageView.image = image;
     }];
 #else
     ALAssetsGroup *assets = (ALAssetsGroup *)item.fetchResult;
-    
     [assets enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         
         if (result) {

@@ -10,8 +10,11 @@
 
 #import "XMNPhotoPickerDefines.h"
 
-#import <Photos/PHFetchResult.h>
-#import <AssetsLibrary/ALAssetsGroup.h>
+#ifdef kXMNPhotosAvailable
+    #import <Photos/PHFetchResult.h>
+#else
+    #import <AssetsLibrary/ALAssetsGroup.h>
+#endif
 
 @interface XMNAlbumModel ()
 
@@ -31,21 +34,21 @@
 #pragma mark - Methods
 
 + (XMNAlbumModel *)albumWithResult:(id)result name:(NSString *)name {
+    
     XMNAlbumModel *model = [[XMNAlbumModel alloc] init];
     model.fetchResult = result;
-    
     model.name = [self _albumNameWithOriginName:name];
+#ifdef kXMNPhotosAvailable
     if ([result isKindOfClass:[PHFetchResult class]]) {
         PHFetchResult *fetchResult = (PHFetchResult *)result;
         model.count = fetchResult.count;
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored"-Wdeprecated-declarations"
-    } else if ([result isKindOfClass:[ALAssetsGroup class]]) {
+    }
+#else
+    if ([result isKindOfClass:[ALAssetsGroup class]]) {
         ALAssetsGroup *gruop = (ALAssetsGroup *)result;
         model.count = [gruop numberOfAssets];
-#pragma clang diagnostic pop
     }
+#endif
     return model;
 }
 

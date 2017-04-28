@@ -604,15 +604,15 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
     /** 感谢QQ上的独兄弟 提出的建议 */
     CGSize size = CGSizeZero;
     
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored"-Wdeprecated-declarations"
+#ifdef kXMNPhotosAvailable
     if ([asset.asset isKindOfClass:[PHAsset class]]) {
         size = CGSizeMake([asset.asset pixelWidth], [asset.asset pixelHeight]);
-    }else if ([asset.asset isKindOfClass:[ALAsset class]]){
+    }
+#else
+    if ([asset.asset isKindOfClass:[ALAsset class]]){
         size = [[asset.asset defaultRepresentation] dimensions];
     }
-#pragma clang diagnostic pop
-    
+#endif
     /** 增加默认scale  防止size为CGSizeZero 导致的崩溃问题 */
     CGFloat scale;
     if (CGSizeEqualToSize(CGSizeZero, size)) {

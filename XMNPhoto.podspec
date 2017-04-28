@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.author           = { 'XMFraker' => '3057600441@qq.com' }
   s.source           = { :git => 'https://github.com/ws00801526/XMNPhoto.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '6.0'
   s.default_subspec = 'Picker','Browser'
 
   s.subspec 'Picker' do |ss|
@@ -18,7 +18,6 @@ Pod::Spec.new do |s|
 
   s.subspec 'Browser' do |ss|
     ss.source_files = "XMNPhoto/Classes/XMNPhotoBrowser/*.{h,m}","XMNPhoto/Classes/XMNPhotoBrowser/**/*.{h,m}"
-    ss.public_header_files = 'XMNPhoto/Classes/XMNPhotoBrowser/*.h'
     ss.dependency 'YYWebImage'
   end
 end

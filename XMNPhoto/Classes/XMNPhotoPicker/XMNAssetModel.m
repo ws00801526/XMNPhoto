@@ -11,9 +11,6 @@
 #import "XMNPhotoPickerDefines.h"
 #import "XMNPhotoManager.h"
 
-#import <Photos/Photos.h>
-#import <AssetsLibrary/AssetsLibrary.h>
-
 @interface XMNAssetModel ()
 
 
