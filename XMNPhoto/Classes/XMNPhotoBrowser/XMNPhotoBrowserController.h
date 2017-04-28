@@ -62,7 +62,7 @@ UIKIT_EXTERN CGFloat kXMNPhotoBrowserCellPadding;
  *
  *  @param photos 图片数组
  *
- *  @return
+ *  @return XMNPhotoBrowserController 实例
  */
 - (_Nullable instancetype)initWithPhotos:(NSArray <XMNPhotoModel *> * _Nonnull)photos;
 

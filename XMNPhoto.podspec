@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Picker' do |ss|
     ss.source_files = "XMNPhoto/Classes/XMNPhotoPicker/*.{h,m}","XMNPhoto/Classes/XMNPhotoPicker/**/*.{h,m}"
-    ss.resources = ['XMNPhoto/Assets/XMNPhotoPicker/*.png','XMNPhoto/Assets/XMNPhotoPicker/*.xib']
+    ss.resource_bundles = {'XMNPhotoPicker' => ['XMNPhoto/Assets/XMNPhotoPicker/*.png','XMNPhoto/Assets/XMNPhotoPicker/*.xib']}
   end
 
   s.subspec 'Browser' do |ss|

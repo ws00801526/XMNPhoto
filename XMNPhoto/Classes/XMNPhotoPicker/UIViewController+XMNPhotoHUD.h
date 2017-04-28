@@ -13,7 +13,7 @@
 /**
  *  显示一个alert提示框
  *  只显示提示信息,和一个确定按钮
- *  @param title 具体提示的message
+ *  @param message 具体提示的message
  */
 - (void)showAlertWithMessage:(NSString *)message;
 

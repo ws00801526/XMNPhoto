@@ -12,8 +12,8 @@
 
 /**
  *  @brief 是否允许XMNPhotoPickerSheet 拖动图片发送
- *  默认 YES
- *  @return
+ *
+ *  @return YES or NO
  */
 + (BOOL)isPanGestureEnabled;
 /**
@@ -25,58 +25,50 @@
 
 /**
  *  @brief 预览图片,视频时间距
- *  默认  16.f
- *  @return
+ *
+ *  @return  间隔大小 默认16.f
  */
 + (NSInteger)previewPadding;
 /**
  *  @brief 设置预览图片,视频时间距
  *
- *  @param previewPadding
+ *  @param previewPadding  间隔大小 默认16.f
  */
 + (void)setPreviewPadding:(CGFloat)previewPadding;
 
 /**
  *  @brief 拖动图片发送时 图片动画时间
- *  默认.3f
- *  @return
+ *
+ *  @return 时间间隔 默认.3f
  */
 + (CGFloat)sendingPictureAnimationDuration;
 
 /**
  *  @brief 设置拖动图片发送时动画时间
- *
- *  @param duration
+ *  默认.3f
+ *  @param duration  时间间隔
  */
 + (void)setSendingPictureAnimationDuration:(CGFloat)duration;
 
 /**
  *  @brief 发送图片时,显示图片的imageView tag
- *  默认 999
- *  @return
+ *
+ *  @return  tag 标签
  */
 + (NSInteger)sendingImageViewTag;
 /**
  *  @brief 设置发送图片时,显示图片的imageView Tag
- *
- *  @param tag
+ *  默认999
+ *  @param tag  tag内容
  */
 + (void)setSendingImageViewTag:(NSInteger)tag;
 
 /**
  *  @brief 资源文件所在的bundle
  *  默认   直接拖入工程引用返回[NSBundle mainBundle] 作为framework引用返回[NSBundle bundleWithIdentifier:@"com.XMFraker.XMNPhotoPicker"]
- *  @return
+ *  @return NSBundle实例
  */
 + (NSBundle * _Nonnull)resourceBundle;
-
-/**
- *  @brief 设置资源文件所在的bundle
- *
- *  @param bundle
- */
-+ (void)setResourceBundle:(NSBundle * _Nonnull)bundle;
-
 
 /**
  *  根据给定宽度 获取UICollectionViewLayout 实例
@@ -86,5 +78,16 @@
  *  @return UICollectionViewLayout实例
  */
 + (UICollectionViewLayout * _Nonnull)photoCollectionViewLayoutWithWidth:(CGFloat)width;
+
+@end
+
+@interface XMNPhotoPickerOption (XMNDeprecated)
+
+/**
+ *  @brief 设置资源文件所在的bundle
+ *
+ *  @param bundle 设置bundle实例
+ */
++ (void)setResourceBundle:(NSBundle * _Nonnull)bundle NS_UNAVAILABLE;
 
 @end

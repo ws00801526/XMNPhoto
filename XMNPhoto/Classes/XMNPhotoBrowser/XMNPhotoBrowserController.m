@@ -159,7 +159,7 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
     [browserCell setSingleTapBlock:^(XMNPhotoBrowserCell *__weak _Nonnull browserCell) {
         
         __strong typeof(*&wSelf) self = wSelf;
-        XMNPhotoModel *photoModel = self.photos[indexPath.row];
+//        XMNPhotoModel *photoModel = self.photos[indexPath.row];
         
         /** 保存gif图片的方法 */
 //        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"test.gif"];

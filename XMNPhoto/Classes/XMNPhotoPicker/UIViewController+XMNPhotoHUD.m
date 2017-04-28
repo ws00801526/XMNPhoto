@@ -16,12 +16,6 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored"-Wdeprecated-declarations"
 
-
-/**
- *  显示一个alert提示框
- *  只显示提示信息,和一个确定按钮
- *  @param title 具体提示的message
- */
 - (void)showAlertWithMessage:(NSString *)message {
     
     if (iOS8Later) {
@@ -34,9 +28,6 @@
         [alertView show];
     }
 }
-
-
-
 
 #pragma clang diagnostic pop
 

@@ -27,6 +27,7 @@
 
 - (void)awakeFromNib {
     
+    [super awakeFromNib];
     self.albumCoverImageView.layer.masksToBounds = YES;
 }
 

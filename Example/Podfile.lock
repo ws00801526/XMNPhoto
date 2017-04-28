@@ -1,10 +1,10 @@
 PODS:
-  - XMNPhoto (0.1.0):
-    - XMNPhoto/Browser (= 0.1.0)
-    - XMNPhoto/Picker (= 0.1.0)
-  - XMNPhoto/Browser (0.1.0):
+  - XMNPhoto (1.1.2):
+    - XMNPhoto/Browser (= 1.1.2)
+    - XMNPhoto/Picker (= 1.1.2)
+  - XMNPhoto/Browser (1.1.2):
     - YYWebImage
-  - XMNPhoto/Picker (0.1.0)
+  - XMNPhoto/Picker (1.1.2)
   - YYCache (1.0.4)
   - YYImage (1.0.4):
     - YYImage/Core (= 1.0.4)
@@ -21,11 +21,11 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  XMNPhoto: 5b29525db45d8f877fed474e643995b6cd85b4ea
+  XMNPhoto: 215330cf090351e7b5a10f0db2507c41d94d5c4d
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
   YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
   YYWebImage: 5f7f36aee2ae293f016d418c7d6ba05c4863e928
 
-PODFILE CHECKSUM: a1ad0037bbe143875e944fc17adf8c6c741e13f2
+PODFILE CHECKSUM: 7fafd8a90ea4e34132c74af7bb8bbd854c6f5003
 
-COCOAPODS: 1.1.0.rc.3
+COCOAPODS: 1.2.1

@@ -36,7 +36,7 @@
 /**
  *  @brief 获取当前应用的授权状态
  *  CLAuthorizationStatus  or PHAuthorizationStatus
- *  @return
+ *  @return 授权状态
  */
 @property (assign, nonatomic, readonly) NSUInteger authorizationStatus;
 
