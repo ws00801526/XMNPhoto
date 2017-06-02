@@ -48,7 +48,7 @@
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJE-dn-xaX">
                         <rect key="frame" x="64" y="0.0" width="16" height="16"/>
                         <state key="normal" backgroundImage="XMNPhotoPicker.bundle/photopicker_state_normal"/>
-                        <state key="selected" backgroundImage="photopicker_state_selected"/>
+                        <state key="selected" backgroundImage="XMNPhotoPicker.bundle/photopicker_state_selected"/>
                         <connections>
                             <action selector="_handleButtonAction:" destination="NU2-Pk-TBh" eventType="touchUpInside" id="TZb-HS-w1S"/>
                         </connections>
@@ -78,8 +78,8 @@
     </objects>
     <resources>
         <image name="XMNPhotoPicker.bundle/photopicker_state_normal" width="16" height="16"/>
+        <image name="XMNPhotoPicker.bundle/photopicker_state_selected" width="16" height="16"/>
         <image name="XMNPhotoPicker.bundle/video_icon" width="16" height="16"/>
-        <image name="photopicker_state_selected" width="24" height="24"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
