@@ -18,6 +18,6 @@ Pod::Spec.new do |s|
 
   s.subspec 'Browser' do |ss|
     ss.source_files = "XMNPhoto/Classes/XMNPhotoBrowser/*.{h,m}","XMNPhoto/Classes/XMNPhotoBrowser/**/*.{h,m}"
-    ss.dependency 'YYWebImage', '1.0.5'
+    ss.dependency 'YYWebImage'
   end
 end
