@@ -195,8 +195,9 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
     if (self = [super initWithFrame:frame]) {
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button setImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"photopicker_state_normal@2x" ofType:@"png"]] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"photopicker_state_selected@2x" ofType:@"png"]] forState:UIControlStateSelected];
+        
+        [button setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/photopicker_state_normal" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/photopicker_state_selected" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil] forState:UIControlStateSelected];
 
         [button sizeToFit];
         [self addSubview:self.button = button];
@@ -242,7 +243,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
 
 - (instancetype)initWithMaxCount:(NSUInteger)maxCount {
     
-    NSArray *array = [[XMNPhotoPickerOption resourceBundle] loadNibNamed:@"XMNPhotoPickerSheet" owner:nil options:nil];
+    NSArray *array = [[NSBundle bundleForClass:[self class]] loadNibNamed:@"XMNPhotoPicker.bundle/XMNPhotoPickerSheet" owner:nil options:nil];
     if ((self = (XMNPhotoPickerSheet *)[array firstObject])) {
         self.frame = [UIScreen mainScreen].bounds;
         [self setup];
@@ -355,7 +356,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
     stickLayout.minimumLineSpacing = 5.0f;
     stickLayout.sectionInset = UIEdgeInsetsMake(0, 5, 0, 5);
     
-    [self.collectionView registerNib:[UINib nibWithNibName:@"XMNAssetCell" bundle:[XMNPhotoPickerOption resourceBundle]] forCellWithReuseIdentifier:@"XMNAssetCell"];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"XMNPhotoPicker.bundle/XMNAssetCell" bundle:[NSBundle bundleForClass:[self class]]] forCellWithReuseIdentifier:@"XMNAssetCell"];
     self.collectionView.collectionViewLayout = stickLayout;
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.delegate = self;

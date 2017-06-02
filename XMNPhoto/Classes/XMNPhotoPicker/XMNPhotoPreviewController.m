@@ -213,7 +213,8 @@ static NSString * const kXMNPhotoPreviewIdentifier = @"XMNPhotoPreviewCell";
         _topBar.backgroundColor = [UIColor colorWithRed:34/255.0f green:34/255.0f blue:34/255.0f alpha:.7f];
         
         UIButton *backButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-        [backButton setImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"navigation_back@2x" ofType:@"png"]] forState:UIControlStateNormal];
+        
+        [backButton setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/navigation_back" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
         
         [backButton setContentEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 10)];
         [backButton sizeToFit];
@@ -222,8 +223,9 @@ static NSString * const kXMNPhotoPreviewIdentifier = @"XMNPhotoPreviewCell";
         [_topBar addSubview:backButton];
         
         UIButton *stateButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-        [stateButton setImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"photopicker_state_normal@2x" ofType:@"png"]] forState:UIControlStateNormal];
-        [stateButton setImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"photopicker_state_selected@2x" ofType:@"png"]] forState:UIControlStateSelected];
+        
+        [stateButton setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/photopicker_state_normal" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+        [stateButton setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/photopicker_state_selected" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil] forState:UIControlStateSelected];
         
         [stateButton setContentEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 10)];
         [stateButton sizeToFit];

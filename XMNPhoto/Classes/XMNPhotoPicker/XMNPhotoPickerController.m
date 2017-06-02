@@ -232,7 +232,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.rowHeight = 70.0f;
-    [self.tableView registerNib:[UINib nibWithNibName:@"XMNAlbumCell" bundle:[XMNPhotoPickerOption resourceBundle]] forCellReuseIdentifier:@"XMNAlbumCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"XMNPhotoPicker.bundle/XMNAlbumCell" bundle:[NSBundle bundleForClass:[self class]]] forCellReuseIdentifier:@"XMNAlbumCell"];
     
 
     [self loadAlbums];

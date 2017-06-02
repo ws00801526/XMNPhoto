@@ -107,10 +107,14 @@
     
     UIButton *playButton  = [UIButton buttonWithType:UIButtonTypeCustom];
     playButton.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height - 64 - 44);
-    [playButton setImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"video_preview_play_normal@2x" ofType:@"png"]] forState:UIControlStateNormal];
-    [playButton setImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"video_preview_play_highlight@2x" ofType:@"png"]] forState:UIControlStateSelected];
+    [playButton setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/video_preview_play_normal" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    [playButton setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/video_preview_play_highlight" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil] forState:UIControlStateSelected];
     [playButton addTarget:self action:@selector(_handlePlayAciton) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.playButton = playButton];
+    
+    
+    
+    
 }
 
 - (void)_setupBottomBar {
@@ -144,7 +148,7 @@
 
 - (void)_pausePlayer {
     
-    [self.playButton setImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"video_preview_play_normal@2x" ofType:@"png"]] forState:UIControlStateNormal];
+    [self.playButton setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/video_preview_play_normal" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     [self.player pause];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [UIView animateWithDuration:.2 animations:^{
@@ -186,7 +190,9 @@
         [_topBar addSubview:label];
         
         UIButton *backButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-        [backButton setImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"navigation_back@2x" ofType:@"png"]] forState:UIControlStateNormal];
+        
+        
+        [backButton setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/navigation_back" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
         [backButton setContentEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 10)];
         [backButton sizeToFit];
         backButton.frame = CGRectMake(12, _topBar.frame.size.height/2 - backButton.frame.size.height/2 + originY/2, backButton.frame.size.width, backButton.frame.size.height);

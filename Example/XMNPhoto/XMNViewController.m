@@ -302,7 +302,9 @@
         
         /** 使用kXMNGestureSendImageViewTag 可以获取拖动发送view中的imageView */
         UIImageView *imageView = (UIImageView *)[originView viewWithTag:[XMNPhotoPickerOption sendingImageViewTag]];
+        NSLog(@"this is un used imageview :%@",imageView);
         completedBlock();
+        
     }];
     
     //4. 显示XMNPhotoPicker

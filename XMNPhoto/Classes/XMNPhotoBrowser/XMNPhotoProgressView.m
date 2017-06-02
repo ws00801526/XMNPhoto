@@ -389,7 +389,11 @@
     finalPath.usesEvenOddFillRule = YES;
     
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"path"];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored"-Weverything"
     animation.delegate = self;
+
+#pragma clang diagnostic pop
     animation.toValue = (id)finalPath.CGPath;
     animation.duration = 0.4;
     animation.beginTime = CACurrentMediaTime() + 0.4;

@@ -39,7 +39,7 @@
 
 - (instancetype)initWithBarType:(XMNBottomBarType)barType {
     
-    XMNBottomBar *bottomBar = [[[XMNPhotoPickerOption resourceBundle] loadNibNamed:@"XMNBottomBar" owner:nil options:nil] firstObject];
+    XMNBottomBar *bottomBar = [[[NSBundle bundleForClass:[self class]] loadNibNamed:@"XMNPhotoPicker.bundle/XMNBottomBar" owner:nil options:nil] firstObject];
     bottomBar ? [bottomBar _setupWithType:barType] : nil;
     return bottomBar;
 }
@@ -108,15 +108,17 @@
     [self.originView addGestureRecognizer:originViewTap];
     
     self.originStateImageView.highlighted = NO;
-    [self.originStateImageView setImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"bottom_bar_origin_normal@2x" ofType:@"png"]]];
-    [self.originStateImageView setHighlightedImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"bottom_bar_origin_selected@2x" ofType:@"png"]]];
+    
+
+    [self.originStateImageView setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/bottom_bar_origin_normal" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil]];
+    [self.originStateImageView setHighlightedImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/bottom_bar_origin_selected" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil]];
     
     self.originSizeLabel.text = @"原图";
     self.originSizeLabel.textColor = [UIColor lightGrayColor];
     
     //config number
     self.numberImageView.hidden = self.numberLabel.hidden = YES;
-    [self.numberImageView setImage:[UIImage imageWithContentsOfFile:[[XMNPhotoPickerOption resourceBundle] pathForResource:@"bottom_bar_number_background@2x" ofType:@"png"]]];
+    [self.numberImageView setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/bottom_bar_number_background" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil]];
 
     self.numberLabel.textColor = [UIColor whiteColor];
     

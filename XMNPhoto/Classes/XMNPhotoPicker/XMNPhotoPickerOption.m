@@ -17,15 +17,6 @@ static NSBundle *gBundle;
 
 @implementation XMNPhotoPickerOption
 
-+ (void)initialize {
-
-    gBundle = [NSBundle bundleWithIdentifier:@"org.cocoapods.XMNPhoto"];
-    if (!gBundle) {
-        gBundle = [NSBundle mainBundle];
-    }
-}
-
-
 + (BOOL)isPanGestureEnabled {
     
     return gPanGestureEnabled;
@@ -68,18 +59,6 @@ static NSBundle *gBundle;
 + (void)setSendingImageViewTag:(NSInteger)tag {
     
     gImageViewTag = tag;
-}
-
-+ (NSBundle * _Nonnull)resourceBundle {
-    
-    return gBundle;
-}
-
-+ (void)setResourceBundle:(NSBundle * _Nonnull)bundle {
-    
-    if (bundle) {
-        gBundle = bundle;
-    }
 }
 
 + (UICollectionViewLayout *)photoCollectionViewLayoutWithWidth:(CGFloat)width {

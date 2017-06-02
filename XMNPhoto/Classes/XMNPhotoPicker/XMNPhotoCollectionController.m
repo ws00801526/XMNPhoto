@@ -83,21 +83,6 @@ static NSString * const kXMNAssetCellIdentifier = @"XMNAssetCell";
     self.autoScrollToBottom = NO;
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc {
-    
-    NSLog(@"photo collection dealloc ");
-}
-
 #pragma mark - Methods
 
 - (void)_setupCollectionView {
@@ -106,7 +91,8 @@ static NSString * const kXMNAssetCellIdentifier = @"XMNAssetCell";
     self.collectionView.contentInset = UIEdgeInsetsMake(4, 4, 54, 4);
     self.collectionView.scrollIndicatorInsets = self.collectionView.contentInset;
     self.collectionView.contentSize = CGSizeMake(self.view.frame.size.width, ((self.assets.count + 3) / 4) * self.view.frame.size.width);
-    [self.collectionView registerNib:[UINib nibWithNibName:kXMNAssetCellIdentifier bundle:[XMNPhotoPickerOption resourceBundle]] forCellWithReuseIdentifier:kXMNAssetCellIdentifier];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"XMNPhotoPicker.bundle/XMNAssetCell" bundle:[NSBundle bundleForClass:[self class]]] forCellWithReuseIdentifier:kXMNAssetCellIdentifier];
+    
     
     XMNBottomBar *bottomBar = [[XMNBottomBar alloc] initWithBarType:XMNCollectionBottomBar];
     bottomBar.translatesAutoresizingMaskIntoConstraints = NO;

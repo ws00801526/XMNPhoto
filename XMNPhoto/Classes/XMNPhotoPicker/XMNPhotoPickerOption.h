@@ -64,13 +64,6 @@
 + (void)setSendingImageViewTag:(NSInteger)tag;
 
 /**
- *  @brief 资源文件所在的bundle
- *  默认   直接拖入工程引用返回[NSBundle mainBundle] 作为framework引用返回[NSBundle bundleWithIdentifier:@"com.XMFraker.XMNPhotoPicker"]
- *  @return NSBundle实例
- */
-+ (NSBundle * _Nonnull)resourceBundle;
-
-/**
  *  根据给定宽度 获取UICollectionViewLayout 实例
  *
  *  @param width collectionView 宽度
