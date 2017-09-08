@@ -185,11 +185,11 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
         [alertC addAction:action];
         
-        UIViewController *controller = [self nextResponder];
+        UIResponder *controller = [self nextResponder];
         while (![controller isKindOfClass:[UIViewController class]]) {
             controller = [controller nextResponder];
         }
-        [controller showDetailViewController:alertC sender:self];
+        [(UIViewController *)controller showDetailViewController:alertC sender:self];
     }
     self.saving = NO;
     NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
