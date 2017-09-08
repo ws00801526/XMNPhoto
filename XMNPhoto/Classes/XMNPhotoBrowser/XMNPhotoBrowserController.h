@@ -52,9 +52,6 @@ UIKIT_EXTERN CGFloat kXMNPhotoBrowserCellPadding;
  */
 @property (nonatomic, weak, nullable) UIView *sourceView;
 
-/** 加载图片时的 加载进度条类型 */
-@property (nonatomic, assign) XMNPhotoBrowserLoadingMode loadingMode;
-
 #pragma mark - Life Cycle
 
 /**

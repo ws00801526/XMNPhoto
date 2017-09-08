@@ -126,8 +126,8 @@
     self.confirmButton.enabled = NO;
     [self.confirmButton setTitle:@"确定" forState:UIControlStateNormal];
     [self.confirmButton setTitle:@"确定" forState:UIControlStateDisabled];
-    [self.confirmButton setTitleColor:[UIColor colorWithRed:(83/255.0) green:(179/255.0) blue:(17/255.0) alpha:1.0f] forState:UIControlStateNormal];
-    [self.confirmButton setTitleColor:[UIColor colorWithRed:(83/255.0) green:(179/255.0) blue:(17/255.0) alpha:.5f] forState:UIControlStateDisabled];
+    [self.confirmButton setTitleColor:[UIColor colorWithRed:(36/255.0) green:(159/255.0) blue:(230/255.0) alpha:1.0f] forState:UIControlStateNormal];
+    [self.confirmButton setTitleColor:[UIColor colorWithRed:(36/255.0) green:(159/255.0) blue:(230/255.0) alpha:.5f] forState:UIControlStateDisabled];
     [self.confirmButton addTarget:self action:@selector(_handleConfirmAction) forControlEvents:UIControlEventTouchUpInside];
     
 }

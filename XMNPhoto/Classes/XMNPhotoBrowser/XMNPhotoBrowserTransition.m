@@ -31,9 +31,11 @@
     if (toVC.sourceView) {
         
         /** 判断sourceview 是否设置了 */
-        UIView * snapShotView = [toVC.sourceView snapshotViewAfterScreenUpdates:YES];
+        UIView * snapShotView;
         if ([toVC.sourceView isKindOfClass:[UIImageView class]]) {
             snapShotView = [[UIImageView alloc] initWithImage:[(UIImageView *)toVC.sourceView image]];
+        }else {
+            snapShotView = [toVC.sourceView snapshotViewAfterScreenUpdates:YES];
         }
         snapShotView.clipsToBounds = YES;
         snapShotView.contentMode = UIViewContentModeScaleAspectFill;
@@ -62,6 +64,7 @@
                                              toTargetSize:toVC.view.bounds.size];
             snapShotView.frame = CGRectMake(0, 0, size.width, size.height);
             snapShotView.center = containerView.center;
+            snapShotView.layer.cornerRadius = .0f;
         } completion:^(BOOL finished) {
             
             //为了让回来的时候，cell上的图片显示，必须要让cell上的图片显示出来

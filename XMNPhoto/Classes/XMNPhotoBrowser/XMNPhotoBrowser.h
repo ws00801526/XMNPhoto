@@ -16,8 +16,6 @@ FOUNDATION_EXPORT const unsigned char XMNPhotoBrowserVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <XMNPhotoBrowser/PublicHeader.h>
 
-#import <YYImage/YYImage.h>
-#import <YYCache/YYCache.h>
 #import <YYWebImage/YYWebImage.h>
 
 #if __has_include(<XMNPhoto/XMNPhoto.h>)

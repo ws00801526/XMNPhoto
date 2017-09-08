@@ -8,8 +8,6 @@
 
 #import "XMNPhotoBrowserCell.h"
 
-#import "XMNPhotoProgressView.h"
-
 #import "YYWebImage.h"
 #import "XMNPhotoModel.h"
 
@@ -22,7 +20,8 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) YYAnimatedImageView *imageView;
 
-@property (nonatomic, weak)   XMNPhotoProgressView *progressView;
+@property (assign, nonatomic, getter=isSaving) BOOL saving;
+
 
 @end
 
@@ -49,8 +48,6 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 - (void)configCellWithItem:(XMNPhotoModel *)item {
     
     __weak typeof(*&self) wSelf = self;
-    
-    self.progressView.hidden =  YES;
     [self.scrollView setZoomScale:1.0f];
     
     /** 如果已经下载完毕 直接显示图片 不再去下载 */
@@ -62,57 +59,27 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
         return;
     }
     
-    NSURL *URL = [NSURL URLWithString:item.imagePath];
-    if (!URL) {
+    if (![NSURL URLWithString:item.imagePath]) {
         self.imageView.image = item.thumbnail;
         [self resizeSubviews];
         return;
     }
-    
-    [self.progressView setProgress:.0f animated:NO];
-    self.progressView.hidden = NO;
-    [self.imageView yy_setImageWithURL:URL
+    [self.imageView yy_setImageWithURL:[NSURL URLWithString:item.imagePath]
                            placeholder:item.thumbnail
-                               options:YYWebImageOptionAvoidSetImage
-                              progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                  
-                                  __strong typeof(*&wSelf) self = wSelf;
-                                  if (expectedSize > 0 && receivedSize > 0) {
-                                      CGFloat progress = (CGFloat)receivedSize / expectedSize;
-                                      progress = progress < 0 ? 0 : progress > 1 ? 1 : progress;
-                                      if (self.progressView.hidden) {
-                                          self.progressView.hidden = NO;
-                                      }
-                                      [self.progressView setProgress:progress];
-                                  }
-                              }
+                               options:YYWebImageOptionSetImageWithFadeAnimation
+                              progress:NULL
                              transform:nil
                             completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
                                 if (!error && image) {
-                                    /** 下载完图片后 再次重置imageView 大小 */
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                        __strong typeof(*&wSelf) self = wSelf;
-                                        if (stage == YYWebImageStageFinished) {
-                                            
-                                            self.progressView.progress = 1.1f;
-                                            if (self.loadingMode == XMNPhotoBrowserLoadingCircle) {
-                                                [self showImageWithFadeAnimation:image];
-                                            }else {
-                                                [self.progressView progressAnimiationDidStop:^{
-                                                    self.imageView.image = image;
-                                                    [self resizeSubviews];
-                                                }];
-                                            }
-                                        }
-                                    });
+                                    __strong typeof(wSelf) self = wSelf;
+                                    [self resizeSubviews];
                                 }
                             }];
-    [self resizeSubviews];
 }
 
 
 - (void)cancelImageRequest {
-    
+
     [self.imageView yy_cancelCurrentImageRequest];
     [self.imageView yy_cancelCurrentHighlightedImageRequest];
 }
@@ -141,21 +108,9 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     
     self.backgroundColor = self.contentView.backgroundColor = [UIColor blackColor];
     
-    self.loadingMode = XMNPhotoBrowserLoadingProgress;
-    
     [self.containerView addSubview:self.imageView];
     [self.scrollView addSubview:self.containerView];
     [self.contentView addSubview:self.scrollView];
-    
-    XMNPhotoProgressView *progressView = [[XMNPhotoProgressView alloc] initWithFrame:self.containerView.bounds];
-    progressView.translatesAutoresizingMaskIntoConstraints = NO;
-    progressView.hidden = YES;
-    progressView.backgroundView.backgroundColor = [UIColor clearColor];
-    progressView.backgroundColor = [UIColor clearColor];
-    progressView.indeterminate = self.loadingMode == XMNPhotoBrowserLoadingCircle;
-    progressView.showsText = self.loadingMode == XMNPhotoBrowserLoadingProgress;
-//    progressView.blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    [self.containerView addSubview:self.progressView = progressView];
 
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
     
@@ -165,16 +120,23 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     [singleTap requireGestureRecognizerToFail:doubleTap];
     [self.contentView addGestureRecognizer:singleTap];
     [self.contentView addGestureRecognizer:doubleTap];
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    longPress.minimumPressDuration = .3f;
+    [self.contentView addGestureRecognizer:longPress];
+
+    [singleTap requireGestureRecognizerToFail:longPress];
+    [doubleTap requireGestureRecognizerToFail:longPress];
 }
 
 - (void)resizeSubviews {
     
     self.containerView.frame = CGRectMake(0, 0, self.bounds.size.width - 16, self.bounds.size.height);
-    UIImage *image = self.imageView.image;
-    if (!image) {
+    if (!self.imageView.image) {
         return;
     }
     
+    UIImage *image = self.imageView.image;
     CGSize size = [XMNPhotoModel adjustOriginSize:image.size
                                      toTargetSize:CGSizeMake(self.bounds.size.width - kXMNPhotoBrowserCellPadding, self.bounds.size.height)];
     self.containerView.frame = CGRectMake(0, 0, size.width, size.height);
@@ -183,7 +145,6 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     [self.scrollView scrollRectToVisible:self.bounds animated:NO];
     self.scrollView.alwaysBounceVertical = self.containerView.frame.size.height <= self.frame.size.height ? NO : YES;
     self.imageView.frame = self.containerView.bounds;
-    self.progressView.frame = self.containerView.bounds;
     [self scrollViewDidZoom:self.scrollView];
     self.scrollView.maximumZoomScale = MAX(MAX(image.size.width/(self.bounds.size.width - kXMNPhotoBrowserCellPadding), image.size.height / self.bounds.size.height), 3.f);
 }
@@ -208,6 +169,31 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     }
 }
 
+- (void)handleLongPress:(UIGestureRecognizer *)ges {
+    if (!self.isSaving && ges.state == UIGestureRecognizerStateBegan) {
+        self.saving = YES;
+        UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+        
+    }
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    
+    if (!error) {
+
+        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:@"图片保存成功" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+        [alertC addAction:action];
+        
+        UIViewController *controller = [self nextResponder];
+        while (![controller isKindOfClass:[UIViewController class]]) {
+            controller = [controller nextResponder];
+        }
+        [controller showDetailViewController:alertC sender:self];
+    }
+    self.saving = NO;
+    NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
+}
 
 #pragma mark - UIScrollViewDelegate
 
@@ -221,15 +207,6 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     CGFloat offsetX = (scrollView.frame.size.width > scrollView.contentSize.width) ? (scrollView.frame.size.width - scrollView.contentSize.width) * 0.5 : 0.0;
     CGFloat offsetY = (scrollView.frame.size.height > scrollView.contentSize.height) ? (scrollView.frame.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
     self.containerView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX, scrollView.contentSize.height * 0.5 + offsetY);
-}
-
-#pragma mark - Setters
-
-- (void)setLoadingMode:(XMNPhotoBrowserLoadingMode)loadingMode {
-    
-    _loadingMode = loadingMode;
-    self.progressView.indeterminate = self.loadingMode == XMNPhotoBrowserLoadingCircle;
-    self.progressView.showsText = self.loadingMode == XMNPhotoBrowserLoadingProgress;
 }
 
 #pragma mark - Getters
@@ -275,6 +252,11 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _imageView;
+}
+
+- (BOOL)isSaving {
+    
+    return _saving;
 }
 
 @end
