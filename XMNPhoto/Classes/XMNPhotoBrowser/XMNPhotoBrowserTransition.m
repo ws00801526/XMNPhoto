@@ -72,7 +72,7 @@
             toVC.collectionView.hidden = NO;
             [snapShotView removeFromSuperview];
             //告诉系统动画结束
-            [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
+            [transitionContext completeTransition:YES];
         }];
     }else {
         /** sourceview 未设置 ,使用另外种转场方式 */
@@ -124,7 +124,7 @@
         toVC.collectionView.hidden = NO;
         [snapShotView removeFromSuperview];
         //告诉系统动画结束
-        [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
+        [transitionContext completeTransition:YES];
     }];
 }
 
