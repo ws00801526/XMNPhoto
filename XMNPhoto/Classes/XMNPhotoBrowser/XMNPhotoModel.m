@@ -60,9 +60,11 @@
 
 - (UIImage *)image {
     
+    if (![self.imagePath hasPrefix:@"http"]) {
+        return [UIImage imageWithContentsOfFile:self.imagePath];
+    }
     return [[YYWebImageManager sharedManager].cache getImageForKey:[[YYWebImageManager sharedManager] cacheKeyForURL:[NSURL URLWithString:self.imagePath]]];
 }
-
 
 #pragma mark - Class Methods
 

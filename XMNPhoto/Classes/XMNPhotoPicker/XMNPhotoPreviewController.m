@@ -209,7 +209,8 @@ static NSString * const kXMNPhotoPreviewIdentifier = @"XMNPhotoPreviewCell";
     if (!_topBar) {
         
         CGFloat originY = iOS7Later ? 20 : 0;
-        _topBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, originY + 44)];
+        BOOL iPhoneX = (((int)[UIScreen mainScreen].bounds.size.height == 812) ? YES : NO);
+        _topBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, (originY + 44 + (iPhoneX ? 22.0f : .0f)))];
         _topBar.backgroundColor = [UIColor colorWithRed:34/255.0f green:34/255.0f blue:34/255.0f alpha:.7f];
         
         UIButton *backButton  = [UIButton buttonWithType:UIButtonTypeCustom];
