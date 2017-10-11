@@ -6,6 +6,8 @@
 //  Copyright © 2016年 XMFraker. All rights reserved.
 //
 
+
+#import "XMNPhotoBrowserController.h"
 #import "XMNPhotoBrowserCell.h"
 
 #import "YYWebImage.h"
@@ -19,9 +21,6 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) YYAnimatedImageView *imageView;
-
-@property (assign, nonatomic, getter=isSaving) BOOL saving;
-
 
 @end
 
@@ -89,21 +88,6 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 /// @name   Private Methods
 /// ========================================
 
-
-- (void)showImageWithFadeAnimation:(UIImage *)image {
-    
-    [UIView animateWithDuration:.15
-                     animations:^{
-                         self.imageView.alpha = .0f;
-                     } completion:^(BOOL finished) {
-                         self.imageView.image = image;
-                         [self resizeSubviews];
-                         [UIView animateWithDuration:.2f animations:^{
-                             self.imageView.alpha = 1.f;
-                         }];
-                     }];
-}
-
 - (void)setup {
     
     self.backgroundColor = self.contentView.backgroundColor = [UIColor blackColor];
@@ -170,30 +154,28 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 }
 
 - (void)handleLongPress:(UIGestureRecognizer *)ges {
-    if (!self.isSaving && ges.state == UIGestureRecognizerStateBegan) {
-        self.saving = YES;
-        UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-        
+    if (ges.state == UIGestureRecognizerStateBegan) {
+        self.longPressHandler ? self.longPressHandler(self) : nil;
     }
 }
 
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
-    
-    if (!error) {
-
-        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:@"图片保存成功" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-        [alertC addAction:action];
-        
-        UIResponder *controller = [self nextResponder];
-        while (![controller isKindOfClass:[UIViewController class]]) {
-            controller = [controller nextResponder];
-        }
-        [(UIViewController *)controller showDetailViewController:alertC sender:self];
-    }
-    self.saving = NO;
-    NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
-}
+//- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+//
+//    if (!error) {
+//
+//        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:@"图片保存成功" preferredStyle:UIAlertControllerStyleAlert];
+//        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+//        [alertC addAction:action];
+//
+//        UIResponder *controller = [self nextResponder];
+//        while (![controller isKindOfClass:[UIViewController class]]) {
+//            controller = [controller nextResponder];
+//        }
+//        [(UIViewController *)controller showDetailViewController:alertC sender:self];
+//    }
+//    self.saving = NO;
+//    NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
+//}
 
 #pragma mark - UIScrollViewDelegate
 
@@ -252,11 +234,6 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _imageView;
-}
-
-- (BOOL)isSaving {
-    
-    return _saving;
 }
 
 @end

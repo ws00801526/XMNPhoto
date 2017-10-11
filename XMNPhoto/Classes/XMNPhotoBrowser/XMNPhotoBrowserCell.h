@@ -14,7 +14,8 @@
 
 @property (nonatomic, strong, readonly, nonnull) YYAnimatedImageView *imageView;
 
-@property (nonatomic, copy, nullable)   void(^singleTapBlock)(XMNPhotoBrowserCell __weak  * _Nullable  browserCell);
+@property (nonatomic, copy, nullable)   void(^singleTapBlock)(XMNPhotoBrowserCell * _Nonnull  browserCell);
+@property (nonatomic, copy, nullable)   void(^longPressHandler)(XMNPhotoBrowserCell * _Nonnull  browserCell);
 
 - (void)configCellWithItem:(XMNPhotoModel * _Nonnull )item;
 - (void)cancelImageRequest;

@@ -114,6 +114,18 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
     self.collectionView.pagingEnabled = YES;
 }
 
+- (void)saveImageToPhotoAlbum:(UIImage *)image {
+    
+    __weak typeof(self) wSelf = self;
+    [image yy_saveToAlbumWithCompletionBlock:^(NSURL * _Nullable assetURL, NSError * _Nullable error) {
+        
+        __strong typeof(wSelf) self = wSelf;
+        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:error ? @"图片保存失败,请重试" : @"图片保存成功" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+        [alertC addAction:action];
+        [self showDetailViewController:alertC sender:self];
+    }];
+}
 
 #pragma mark - UIViewControllerTransitioningDelegate
 
@@ -144,7 +156,6 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
     return 1;
 }
 
-
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
     return self.photos.count;
@@ -155,17 +166,26 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
     XMNPhotoBrowserCell *browserCell = [collectionView dequeueReusableCellWithReuseIdentifier:kXMNPhotoBrowserCellIdentifier forIndexPath:indexPath];
     [browserCell configCellWithItem:self.photos[indexPath.row]];
     __weak typeof(*&self) wSelf = self;
-    [browserCell setSingleTapBlock:^(XMNPhotoBrowserCell *__weak _Nonnull browserCell) {
-        
+    browserCell.singleTapBlock = ^(XMNPhotoBrowserCell * _Nonnull browserCell) {
         __strong typeof(*&wSelf) self = wSelf;
-//        XMNPhotoModel *photoModel = self.photos[indexPath.row];
+        //        XMNPhotoModel *photoModel = self.photos[indexPath.row];
         
         /** 保存gif图片的方法 */
-//        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"test.gif"];
-//        [[(YYImage *)photoModel.image animatedImageData] writeToFile:path atomically:YES];
-//        NSLog(@"path :%@",path);
+        //        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"test.gif"];
+        //        [[(YYImage *)photoModel.image animatedImageData] writeToFile:path atomically:YES];
+        //        NSLog(@"path :%@",path);
         [self dismissViewControllerAnimated:YES completion:nil];
-    }];
+    };
+    
+    browserCell.longPressHandler = ^(XMNPhotoBrowserCell * _Nonnull browserCell) {
+        __strong typeof(wSelf) self = wSelf;
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:browserCell];
+        if (indexPath.item < self.photos.count) {
+            XMNPhotoModel *photoModel = [self.photos objectAtIndex:indexPath.item];
+            self.longPressActionHandler ? self.longPressActionHandler(photoModel) :[self saveImageToPhotoAlbum:photoModel.image];
+        }
+    };
+    
     return browserCell;
 }
 

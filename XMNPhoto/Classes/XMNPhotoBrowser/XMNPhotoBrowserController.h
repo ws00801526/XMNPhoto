@@ -52,6 +52,11 @@ UIKIT_EXTERN CGFloat kXMNPhotoBrowserCellPadding;
  */
 @property (nonatomic, weak, nullable) UIView *sourceView;
 
+/**
+ *  触发图片长按手势处理动作
+ */
+@property (copy, nonatomic, nullable) void(^longPressActionHandler)(XMNPhotoModel * __nonnull photo);
+
 #pragma mark - Life Cycle
 
 /**
