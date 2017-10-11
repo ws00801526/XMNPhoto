@@ -158,7 +158,8 @@
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:fromVC.currentItemIndex inSection:0];
         
         XMNPhotoBrowserCell *browserCell = (XMNPhotoBrowserCell *)[fromVC.collectionView cellForItemAtIndexPath:indexPath];
-
+        
+        /** 配置动画view */
         UIImageView *snapShotView = [[UIImageView alloc] initWithImage:browserCell.imageView.image];
         snapShotView.contentMode = UIViewContentModeScaleAspectFill;
         snapShotView.clipsToBounds = YES;
@@ -166,6 +167,7 @@
         
         /** 隐藏 返回的view */
         fromVC.sourceView.hidden = YES;
+        browserCell.hidden = YES;
 
         //设置第二个控制器的位置、透明度
         toVC.view.frame = [transitionContext finalFrameForViewController:toVC];
