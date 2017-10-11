@@ -8,16 +8,18 @@
 
 #import "XMNPhotoPreviewCell.h"
 
+#import "YYImage.h"
 #import "XMNAssetModel.h"
-
 #import "XMNPhotoPickerOption.h"
 #import "XMNPhotoPickerDefines.h"
+
+#import "UIImage+XMNResize.h"
 
 @interface XMNPhotoPreviewCell () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *containerView;
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) YYAnimatedImageView *imageView;
 
 @end
 
@@ -35,7 +37,11 @@
 - (void)configCellWithItem:(XMNAssetModel *)item {
     
     [self.scrollView setZoomScale:1.0f];
-    self.imageView.image = item.previewImage;
+    if (item.isGIF) {
+        self.imageView.image = [YYImage imageWithData:item.imageData scale:[UIScreen mainScreen].scale];
+    }else {
+        self.imageView.image = item.previewImage;
+    }
     [self _resizeSubviews];
 }
 
@@ -64,8 +70,7 @@
     if (!image) {
         return;
     }
-    CGSize size = [[self class] adjustOriginSize:image.size
-                                     toTargetSize:CGSizeMake(self.bounds.size.width - [XMNPhotoPickerOption previewPadding], self.bounds.size.height)];
+    CGSize size = [image xmn_fittedSizeForTargetSize:CGSizeMake(self.bounds.size.width - [XMNPhotoPickerOption previewPadding], self.bounds.size.height)];
     self.containerView.frame = CGRectMake(0, 0, size.width, size.height);
     
     self.scrollView.contentSize = CGSizeMake(MAX(self.frame.size.width - 16, self.containerView.bounds.size.width), MAX(self.frame.size.height, self.containerView.bounds.size.height));
@@ -124,7 +129,6 @@
         _scrollView.delaysContentTouches = NO;
         _scrollView.canCancelContentTouches = YES;
         _scrollView.alwaysBounceVertical = NO;
-        
     }
     return _scrollView;
 }
@@ -140,44 +144,14 @@
     return _containerView;
 }
 
-- (UIImageView *)imageView {
+- (YYAnimatedImageView *)imageView {
     if (!_imageView) {
         
-        _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
+        _imageView = [[YYAnimatedImageView alloc] initWithFrame:self.bounds];
         _imageView.backgroundColor = [UIColor blackColor];
         _imageView.clipsToBounds = YES;
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _imageView;
-}
-
-
-#pragma mark - Class Methods
-
-
-+ (CGSize)adjustOriginSize:(CGSize)originSize
-              toTargetSize:(CGSize)targetSize {
-    
-    CGSize resultSize = CGSizeMake(originSize.width, originSize.height);
-    
-    /** 计算图片的比例 */
-    CGFloat widthPercent = (originSize.width ) / (targetSize.width);
-    CGFloat heightPercent = (originSize.height ) / targetSize.height;
-    if (widthPercent <= 1.0f && heightPercent <= 1.0f) {
-        resultSize = CGSizeMake(originSize.width, originSize.height);
-    } else if (widthPercent > 1.0f && heightPercent < 1.0f) {
-        
-        resultSize = CGSizeMake(targetSize.width, (originSize.height * targetSize.width) / originSize.width);
-    }else if (widthPercent <= 1.0f && heightPercent > 1.0f) {
-        
-        resultSize = CGSizeMake((targetSize.height * originSize.width) / originSize.height, targetSize.height);
-    }else {
-        if (widthPercent > heightPercent) {
-            resultSize = CGSizeMake(targetSize.width, (originSize.height * targetSize.width) / originSize.width);
-        }else {
-            resultSize = CGSizeMake((targetSize.height * originSize.width) / originSize.height, targetSize.height);
-        }
-    }
-    return resultSize;
 }
 @end

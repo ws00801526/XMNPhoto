@@ -121,7 +121,7 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     }
     
     UIImage *image = self.imageView.image;
-    CGSize size = [XMNPhotoModel adjustOriginSize:image.size
+    CGSize size = [XMNPhotoModel adjustOriginSize:CGSizeMake(image.size.width * image.scale, image.size.height * image.scale)
                                      toTargetSize:CGSizeMake(self.bounds.size.width - kXMNPhotoBrowserCellPadding, self.bounds.size.height)];
     self.containerView.frame = CGRectMake(0, 0, size.width, size.height);
 
@@ -158,24 +158,6 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
         self.longPressHandler ? self.longPressHandler(self) : nil;
     }
 }
-
-//- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
-//
-//    if (!error) {
-//
-//        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:@"图片保存成功" preferredStyle:UIAlertControllerStyleAlert];
-//        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-//        [alertC addAction:action];
-//
-//        UIResponder *controller = [self nextResponder];
-//        while (![controller isKindOfClass:[UIViewController class]]) {
-//            controller = [controller nextResponder];
-//        }
-//        [(UIViewController *)controller showDetailViewController:alertC sender:self];
-//    }
-//    self.saving = NO;
-//    NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
-//}
 
 #pragma mark - UIScrollViewDelegate
 

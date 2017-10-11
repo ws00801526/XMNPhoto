@@ -38,7 +38,7 @@
 @synthesize playerItemInfo = _playerItemInfo;
 @synthesize filename = _filename;
 @synthesize filepath = _filepath;
-
+@synthesize imageData = _imageData;
 #pragma mark - Methods
 
 
@@ -107,12 +107,34 @@
     if (_previewImage) {
         return _previewImage;
     }
+    
     __block UIImage *resultImage;
-    [[XMNPhotoManager sharedManager] getPreviewImageWithAsset:self.asset completionBlock:^(UIImage *image) {
-        resultImage = image;
-    }];
+    if ((self.imageRatio > .0f && self.imageRatio <= .25f) || (self.imageRatio >= 4.0f)) {
+        /** 图片比例异常, 获取对应预览图时需要注意 */
+        return self.originImage;
+    }else {
+        
+        [[XMNPhotoManager sharedManager] getPreviewImageWithAsset:self.asset completionBlock:^(UIImage *image) {
+            resultImage = image;
+        }];
+    }
     _previewImage = resultImage;
     return _previewImage;
+}
+
+- (NSData *)imageData {
+    
+    if (_imageData) {
+        return _imageData;
+    }
+    
+    __block NSData *retData;
+    [[XMNPhotoManager sharedManager] getImageDataWithAsset:self.asset
+                                           completionBlock:^(NSData * _Nullable imageData) {
+                                               retData = [imageData copy];
+                                           }];
+    _imageData = [retData copy];
+    return _imageData;
 }
 
 - (UIImageOrientation)imageOrientation {
@@ -143,6 +165,23 @@
     return _playerItem;
 }
 
+- (BOOL)isGIF {
+    
+#ifdef kXMNPhotosAvailable
+    return [(PHAsset *)self.asset mediaSubtypes] == 32;
+#else
+    return NO;
+#endif
+}
+
+- (CGFloat)imageRatio {
+    
+#ifdef kXMNPhotosAvailable
+    return (float)[self.asset pixelWidth] / (float)[self.asset pixelHeight];
+#else
+    return [[[asset.asset defaultRepresentation] dimensions] width] / [[[asset.asset defaultRepresentation] dimensions] height];
+#endif
+}
 
 - (NSDictionary *)playerItemInfo {
     

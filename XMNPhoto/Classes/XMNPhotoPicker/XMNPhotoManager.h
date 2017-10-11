@@ -74,6 +74,8 @@
 /// @name   获取Asset对应信息相关方法
 /// ========================================
 
+- (void)getImageDataWithAsset:(id __nonnull)asset
+              completionBlock:(void(^_Nonnull)(NSData * _Nullable imageData))completionBlock;
 /**
  *  根据提供的asset 获取原图图片
  *  使用异步获取asset的原图图片
@@ -143,11 +145,4 @@
  */
 - (void)getVideoInfoWithAsset:(id _Nonnull)asset
               completionBlock:(void(^ _Nonnull)(AVPlayerItem * _Nullable playerItem,NSDictionary * _Nullable playetItemInfo))completionBlock;
-
-
-#pragma mark - Class Methods
-
-+ (CGSize)adjustOriginSize:(CGSize)originSize
-              toTargetSize:(CGSize)targetSize;
-
 @end

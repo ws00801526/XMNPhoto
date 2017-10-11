@@ -41,6 +41,12 @@ typedef enum : NSUInteger {
 
 /** 图片路径,视频路径 */
 @property (nonatomic, copy  , readonly, nullable)   NSString *filepath;
+/** 获取图片对应的bytes数据, 适用于显示GIF */
+@property (nonatomic, copy  , readonly, nullable)   NSData *imageData;
+/** 判断当前图片是否是GIF, 如果是使用imageData显示 */
+@property (assign, nonatomic, readonly, getter=isGIF) BOOL isGIF;
+/** 当前图片 宽/高 比例 */
+@property (assign, nonatomic, readonly) CGFloat imageRatio;
 
 /// ========================================
 /// @name   视频,audio相关信息

@@ -13,4 +13,6 @@
 - (UIImage *)xmn_resizeImageToSize:(CGSize)targetSize;
 - (UIImage *)xmn_fixImageOrientation;
 
+
+- (CGSize)xmn_fittedSizeForTargetSize:(CGSize)targetSize;
 @end

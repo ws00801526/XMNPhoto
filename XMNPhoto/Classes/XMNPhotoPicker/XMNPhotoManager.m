@@ -82,7 +82,7 @@
      * */
     
     /** 根据github @suyongmaozhao 兄弟的意见,获取相册时不进行过滤 */
-    /** 获取只能相册，过滤其中图片为0的 */
+    /** 获取智能相册，过滤其中图片为0的 */
     PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
     /** 获取普通相册，过滤其中图片为0的 */
     PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
@@ -224,6 +224,46 @@
 /// ========================================
 
 
+- (void)getImageDataWithAsset:(id __nonnull)asset
+              completionBlock:(void(^_Nonnull)(NSData * _Nullable imageData))completionBlock {
+ 
+    __block UIImage *resultImage;
+#ifdef kXMNPhotosAvailable
+    PHImageRequestOptions *imageRequestOption = [[PHImageRequestOptions alloc] init];
+    imageRequestOption.synchronous = YES;
+    [self.cachingImageManager requestImageDataForAsset:asset options:imageRequestOption resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+        completionBlock ? completionBlock(imageData) : nil;
+    }];
+#else
+    CGImageRef fullResolutionImageRef = [[(ALAsset *)asset defaultRepresentation] fullResolutionImage];
+    //        // 通过 fullResolutionImage 获取到的的高清图实际上并不带上在照片应用中使用“编辑”处理的效果，需要额外在 AlAssetRepresentation 中获取这些信息
+    NSString *adjustment = [[[(ALAsset *)asset defaultRepresentation] metadata] objectForKey:@"AdjustmentXMP"];
+    if (adjustment) {
+        // 如果有在照片应用中使用“编辑”效果，则需要获取这些编辑后的滤镜，手工叠加到原图中
+        NSData *xmpData = [adjustment dataUsingEncoding:NSUTF8StringEncoding];
+        CIImage *tempImage = [CIImage imageWithCGImage:fullResolutionImageRef];
+        
+        NSError *error;
+        NSArray *filterArray = [CIFilter filterArrayFromSerializedXMP:xmpData
+                                                     inputImageExtent:tempImage.extent
+                                                                error:&error];
+        CIContext *context = [CIContext contextWithOptions:nil];
+        if (filterArray && !error) {
+            for (CIFilter *filter in filterArray) {
+                [filter setValue:tempImage forKey:kCIInputImageKey];
+                tempImage = [filter outputImage];
+            }
+            fullResolutionImageRef = [context createCGImage:tempImage fromRect:[tempImage extent]];
+        }
+    }
+    // 生成最终返回的 UIImage，同时把图片的 orientation 也补充上去
+    resultImage = [UIImage imageWithCGImage:fullResolutionImageRef
+                                      scale:[[asset defaultRepresentation] scale]
+                                orientation:(UIImageOrientation)[[asset defaultRepresentation] orientation]];
+    completionBlock ? completionBlock(resultImage) : nil;
+#endif
+}
+
 /**
  *  根据提供的asset 获取原图图片
  *  使用异步获取asset的原图图片
@@ -293,7 +333,6 @@
     [self.cachingImageManager requestImageForAsset:asset targetSize:CGSizeMake(size.width * screenScale, size.height * screenScale) contentMode:PHImageContentModeAspectFit options:imageRequestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         completionBlock ? completionBlock(result) : nil;
     }];
-
 #else
     
     UIImage *thumbnail = [UIImage imageWithCGImage:[asset thumbnail]];
@@ -301,10 +340,6 @@
         completionBlock ? completionBlock(thumbnail) : nil;
     }else {
         [self getOriginImageWithAsset:asset completionBlock:^(UIImage * _Nullable image) {
-            
-            /** 可以选择返回一个压缩过的尺寸图片 */
-            //                completionBlock ? completionBlock([image xmn_resizeImageToSize:[XMNPhotoManager adjustOriginSize:image.size toTargetSize:size]]) : nil;
-            
             /** 或者直接返回原图 */
             completionBlock ? completionBlock(image) : nil;
         }];
@@ -494,31 +529,4 @@
     return newTime;
 }
 
-
-
-+ (CGSize)adjustOriginSize:(CGSize)originSize
-              toTargetSize:(CGSize)targetSize {
-    
-    CGSize resultSize = CGSizeMake(originSize.width, originSize.height);
-    
-    /** 计算图片的比例 */
-    CGFloat widthPercent = (originSize.width ) / (targetSize.width);
-    CGFloat heightPercent = (originSize.height ) / targetSize.height;
-    if (widthPercent <= 1.0f && heightPercent <= 1.0f) {
-        resultSize = CGSizeMake(originSize.width, originSize.height);
-    } else if (widthPercent > 1.0f && heightPercent < 1.0f) {
-        
-        resultSize = CGSizeMake(targetSize.width, (originSize.height * targetSize.width) / originSize.width);
-    }else if (widthPercent <= 1.0f && heightPercent > 1.0f) {
-        
-        resultSize = CGSizeMake((targetSize.height * originSize.width) / originSize.height, targetSize.height);
-    }else {
-        if (widthPercent > heightPercent) {
-            resultSize = CGSizeMake(targetSize.width, (originSize.height * targetSize.width) / originSize.width);
-        }else {
-            resultSize = CGSizeMake((targetSize.height * originSize.width) / originSize.height, targetSize.height);
-        }
-    }
-    return resultSize;
-}
 @end

@@ -19,6 +19,7 @@
 #import "XMNPhotoPickerOption.h"
 #import "XMNPhotoPickerDefines.h"
 #import "XMNPhotoStickLayout.h"
+#import "YYImage.h"
 
 #import "UIImage+XMNResize.h"
 #import "UIView+Animations.h"
@@ -37,7 +38,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
 
 @interface XMNPhotoPickerCell : UICollectionViewCell;
 
-@property (nonatomic, weak)   UIImageView *imageView;
+@property (nonatomic, weak)   YYAnimatedImageView *imageView;
 
 @property (nonatomic, strong) UIView *tempView;
 
@@ -62,7 +63,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
     if (self = [super initWithFrame:frame]) {
 
         NSLog(@"photopicker cell");
-        UIImageView *imageView = [[UIImageView alloc] init];
+        YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
         imageView.backgroundColor = [UIColor darkGrayColor];
         [self.contentView addSubview:self.imageView = imageView];
         
@@ -547,7 +548,12 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     XMNPhotoPickerCell *pickerCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"XMNPhotoPickerCell" forIndexPath:indexPath];
-    pickerCell.imageView.image = self.assets[indexPath.row].previewImage;
+    XMNAssetModel *assetModel = [self.assets objectAtIndex:indexPath.row];
+    if (assetModel.isGIF) {
+        pickerCell.imageView.image = [YYImage imageWithData:assetModel.imageData scale:[UIScreen mainScreen].scale];
+    }else {
+        pickerCell.imageView.image = assetModel.previewImage;
+    }
     
     if ([XMNPhotoPickerOption isPanGestureEnabled]) {
 
@@ -602,9 +608,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
     
     XMNAssetModel *asset = self.assets[indexPath.row];
     
-    /** 感谢QQ上的独兄弟 提出的建议 */
     CGSize size = CGSizeZero;
-    
 #ifdef kXMNPhotosAvailable
     if ([asset.asset isKindOfClass:[PHAsset class]]) {
         size = CGSizeMake([asset.asset pixelWidth], [asset.asset pixelHeight]);
@@ -614,12 +618,14 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         size = [[asset.asset defaultRepresentation] dimensions];
     }
 #endif
+    /** 感谢QQ上的独兄弟 提出的建议 */
     /** 增加默认scale  防止size为CGSizeZero 导致的崩溃问题 */
     CGFloat scale;
     if (CGSizeEqualToSize(CGSizeZero, size)) {
         scale = .5f;
     }else {
-        scale = (MAX(0, size.width - 10))/size.height;
+        /** 增加最大宽度, 以及最小宽度限制 */
+        scale = MIN((MAX((MAX(0, size.width - 10))/size.height, 0.3f)), 2.5f);
     }
     return CGSizeMake(scale * (self.collectionView.frame.size.height),self.collectionView.frame.size.height);
 }

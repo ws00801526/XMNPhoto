@@ -103,4 +103,29 @@
     return img;
 }
 
+- (CGSize)xmn_fittedSizeForTargetSize:(CGSize)targetSize {
+    
+    CGSize originSize = self.size;
+    CGSize resultSize = CGSizeMake(originSize.width, originSize.height);
+    
+    /** 计算图片的比例 */
+    CGFloat widthPercent = (originSize.width ) / (targetSize.width);
+    CGFloat heightPercent = (originSize.height ) / targetSize.height;
+    if (widthPercent <= 1.0f && heightPercent <= 1.0f) {
+        resultSize = CGSizeMake(originSize.width, originSize.height);
+    } else if (widthPercent > 1.0f && heightPercent < 1.0f) {
+        
+        resultSize = CGSizeMake(targetSize.width, (originSize.height * targetSize.width) / originSize.width);
+    }else if (widthPercent <= 1.0f && heightPercent > 1.0f) {
+        
+        resultSize = CGSizeMake((targetSize.height * originSize.width) / originSize.height, targetSize.height);
+    }else {
+        if (widthPercent > heightPercent) {
+            resultSize = CGSizeMake(targetSize.width, (originSize.height * targetSize.width) / originSize.width);
+        }else {
+            resultSize = CGSizeMake((targetSize.height * originSize.width) / originSize.height, targetSize.height);
+        }
+    }
+    return resultSize;
+}
 @end
