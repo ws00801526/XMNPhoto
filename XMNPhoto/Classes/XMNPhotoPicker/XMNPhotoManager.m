@@ -225,7 +225,6 @@
 - (void)getImageDataWithAsset:(id __nonnull)asset
               completionBlock:(void(^_Nonnull)(NSData * _Nullable imageData))completionBlock {
  
-    __block UIImage *resultImage;
 #ifdef kXMNPhotosAvailable
     PHImageRequestOptions *imageRequestOption = [[PHImageRequestOptions alloc] init];
     imageRequestOption.synchronous = YES;
@@ -255,7 +254,7 @@
         }
     }
     // 生成最终返回的 UIImage，同时把图片的 orientation 也补充上去
-    resultImage = [UIImage imageWithCGImage:fullResolutionImageRef
+    UIImage *resultImage = [UIImage imageWithCGImage:fullResolutionImageRef
                                       scale:[[asset defaultRepresentation] scale]
                                 orientation:(UIImageOrientation)[[asset defaultRepresentation] orientation]];
     completionBlock ? completionBlock(resultImage) : nil;
