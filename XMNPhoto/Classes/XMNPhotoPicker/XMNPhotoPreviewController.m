@@ -71,7 +71,9 @@ static NSString * const kXMNPhotoPreviewIdentifier = @"XMNPhotoPreviewCell";
 
 - (void)dealloc {
     
+#if DEBUG
     NSLog(@"%@  dealloc",NSStringFromClass([self class]));
+#endif
 }
 
 #pragma mark - Methods

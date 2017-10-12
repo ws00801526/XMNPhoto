@@ -135,9 +135,7 @@
 #else
     [self.assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
         if (group == nil) {
-            NSLog(@"group nil will do it");
-            completionBlock ? completionBlock(albumArr) : nil;
-            
+            completionBlock ? completionBlock(albumArr) : nil;            
             /** fix bug before iOS8 will crash because here will be called twice */
             *stop = YES;
         }

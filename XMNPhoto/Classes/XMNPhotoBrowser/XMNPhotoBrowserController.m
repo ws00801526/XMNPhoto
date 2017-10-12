@@ -78,7 +78,9 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
 
 - (void)dealloc {
     
+#if DEBUG
     NSLog(@"%@  dealloc",NSStringFromClass([self class]));
+#endif
 }
 
 /// ========================================
@@ -90,7 +92,6 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
     
     
     NSInteger index = [[self.collectionView indexPathsForVisibleItems] firstObject].row;
-    NSLog(@"屏幕旋转 :%@ index :%d",NSStringFromCGSize(size), (int)index);
     [self.collectionView setCollectionViewLayout:[[self class] photoPreviewViewLayoutWithSize:size] animated:NO];
     [self.collectionView reloadData];
     if (self.photos && self.photos.count > index) {
@@ -168,12 +169,6 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
     __weak typeof(*&self) wSelf = self;
     browserCell.singleTapBlock = ^(XMNPhotoBrowserCell * _Nonnull browserCell) {
         __strong typeof(*&wSelf) self = wSelf;
-        //        XMNPhotoModel *photoModel = self.photos[indexPath.row];
-        
-        /** 保存gif图片的方法 */
-        //        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"test.gif"];
-        //        [[(YYImage *)photoModel.image animatedImageData] writeToFile:path atomically:YES];
-        //        NSLog(@"path :%@",path);
         [self dismissViewControllerAnimated:YES completion:nil];
     };
     

@@ -54,7 +54,6 @@
     [assets enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         
         if (result) {
-            NSLog(@"this is last object :%@",result);
             [[XMNPhotoManager sharedManager] getThumbnailWithAsset:result size:kXMNThumbnailSize completionBlock:^(UIImage *image) {
                 __weak typeof(*&self) self = wSelf;
                 self.albumCoverImageView.image = image;

@@ -48,21 +48,19 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     
     __weak typeof(*&self) wSelf = self;
     [self.scrollView setZoomScale:1.0f];
+    [self resizeSubviewsUsingSize:item.imageSize];
     
     /** 如果已经下载完毕 直接显示图片 不再去下载 */
     if (item.image) {
-
         self.imageView.image = item.image;
-        self.imageView.alpha = 1.f;
-        [self resizeSubviews];
         return;
     }
     
     if (![NSURL URLWithString:item.imagePath]) {
-        self.imageView.image = item.thumbnail;
-        [self resizeSubviews];
+        [self.imageView setImage:item.thumbnail];
         return;
     }
+    
     [self.imageView yy_setImageWithURL:[NSURL URLWithString:item.imagePath]
                            placeholder:item.thumbnail
                                options:YYWebImageOptionSetImageWithFadeAnimation
@@ -71,18 +69,16 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
                             completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
                                 if (!error && image) {
                                     __strong typeof(wSelf) self = wSelf;
-                                    [self resizeSubviews];
+                                    [self resizeSubviewsUsingSize:image.size];
                                 }
                             }];
 }
-
 
 - (void)cancelImageRequest {
 
     [self.imageView yy_cancelCurrentImageRequest];
     [self.imageView yy_cancelCurrentHighlightedImageRequest];
 }
-
 
 /// ========================================
 /// @name   Private Methods
@@ -113,26 +109,25 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     [doubleTap requireGestureRecognizerToFail:longPress];
 }
 
-- (void)resizeSubviews {
+- (void)resizeSubviewsUsingSize:(CGSize)originSize {
     
-    self.containerView.frame = CGRectMake(0, 0, self.bounds.size.width - 16, self.bounds.size.height);
-    if (!self.imageView.image) {
+    CGSize size = [XMNPhotoModel adjustOriginSize:originSize
+                                     toTargetSize:CGSizeMake(self.bounds.size.width - kXMNPhotoBrowserCellPadding, self.bounds.size.height)];
+    if (CGSizeEqualToSize(self.imageView.frame.size, size)) {
+#if DEBUG
+        NSLog(@"resize is equal last will ignored");
+#endif
         return;
     }
     
-    UIImage *image = self.imageView.image;
-    CGSize size = [XMNPhotoModel adjustOriginSize:CGSizeMake(image.size.width * image.scale, image.size.height * image.scale)
-                                     toTargetSize:CGSizeMake(self.bounds.size.width - kXMNPhotoBrowserCellPadding, self.bounds.size.height)];
     self.containerView.frame = CGRectMake(0, 0, size.width, size.height);
-
     self.scrollView.contentSize = CGSizeMake(MAX(self.frame.size.width - kXMNPhotoBrowserCellPadding, self.containerView.bounds.size.width), MAX(self.frame.size.height, self.containerView.bounds.size.height));
     [self.scrollView scrollRectToVisible:self.bounds animated:NO];
     self.scrollView.alwaysBounceVertical = self.containerView.frame.size.height <= self.frame.size.height ? NO : YES;
     self.imageView.frame = self.containerView.bounds;
     [self scrollViewDidZoom:self.scrollView];
-    self.scrollView.maximumZoomScale = MAX(MAX(image.size.width/(self.bounds.size.width - kXMNPhotoBrowserCellPadding), image.size.height / self.bounds.size.height), 3.f);
+    self.scrollView.maximumZoomScale = MAX(3.0f, MAX(((self.bounds.size.width - kXMNPhotoBrowserCellPadding) / size.width), ((self.bounds.size.height) / size.height)));
 }
-
 
 - (void)handleSingleTap {
     

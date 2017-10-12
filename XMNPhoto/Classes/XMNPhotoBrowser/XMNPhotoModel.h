@@ -24,7 +24,6 @@
 /** 图片的大小 默认大小 屏幕宽度x400 */
 @property (nonatomic, assign) CGSize imageSize;
 
-
 /**
  *  够着一个XMNPhotoModel实例
  *
@@ -36,13 +35,12 @@
 - (_Nonnull instancetype)initWithImagePath:(NSString * _Nonnull )imagePath
                                  thumbnail:(UIImage * _Nullable )thumnail;
 
-
 /**
- <#Description#>
+ 获得适合当前屏幕显示的图片尺寸大小
 
- @param originSize <#originSize description#>
- @param targetSize <#targetSize description#>
- @return <#return value description#>
+ @param originSize 图片尺寸原图
+ @param targetSize 最大显示区域
+ @return 计算后的显示区域
  */
 + (CGSize)adjustOriginSize:(CGSize)originSize toTargetSize:(CGSize)targetSize;
 

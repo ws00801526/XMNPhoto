@@ -65,7 +65,9 @@
 }
 
 - (void)dealloc {
+#if DEBUG
     NSLog(@"photo picker dealloc");
+#endif
 }
 
 #pragma mark - XMNPhotoPickerController Methods

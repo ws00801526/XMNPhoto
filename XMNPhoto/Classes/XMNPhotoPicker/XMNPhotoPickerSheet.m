@@ -62,7 +62,6 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
     
     if (self = [super initWithFrame:frame]) {
 
-        NSLog(@"photopicker cell");
         YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
         imageView.backgroundColor = [UIColor darkGrayColor];
         [self.contentView addSubview:self.imageView = imageView];
@@ -264,7 +263,9 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
 
 - (void)dealloc {
     
+#if DEBUG
     NSLog(@"%@  dealloc",NSStringFromClass([self class]));
+#endif
 }
 
 #pragma mark - Methods

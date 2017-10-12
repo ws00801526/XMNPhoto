@@ -79,9 +79,6 @@ NSString *const kXMNStickSupplementaryViewKind = @"com.XMFraker.XMNStickLayout.k
         self.originX += self.minimumLineSpacing;
         self.originY = MAX(itemSize.height, self.originY);
     }
-    
-    NSLog(@" this is item AttributeCount :%@",self.itemAttributesArrayM);
-    NSLog(@" this is item supplementary :%@",self.supplementaryViewAttributesArrayM);
 }
 
 

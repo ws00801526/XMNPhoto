@@ -196,7 +196,6 @@
 
 - (void)normalDismissTranistionWithContext:(id <UIViewControllerContextTransitioning>)transitionContext {
     
-    NSLog(@"browser will dismiss normal");
     //获取两个VC 和 动画发生的容器
     UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     XMNPhotoBrowserController *fromVC   = (XMNPhotoBrowserController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
