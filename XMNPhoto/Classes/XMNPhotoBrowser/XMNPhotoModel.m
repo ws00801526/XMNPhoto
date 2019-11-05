@@ -48,11 +48,13 @@
     if (CGSizeEqualToSize(_imageSize, CGSizeZero)) {
         
         if (self.image) {
-            return self.image.size;
+            CGFloat scale = self.image.scale;
+           _imageSize = CGSizeApplyAffineTransform(self.image.size, CGAffineTransformMakeScale(scale, scale));
         }
         
         if (self.thumbnail) {
-            return self.thumbnail.size;
+            CGFloat scale = self.thumbnail.scale;
+            _imageSize = CGSizeApplyAffineTransform(self.thumbnail.size, CGAffineTransformMakeScale(scale, scale));
         }
     }
     return _imageSize;
@@ -68,30 +70,26 @@
 
 #pragma mark - Class Methods
 
-+ (CGSize)adjustOriginSize:(CGSize)originSize
-              toTargetSize:(CGSize)targetSize {
++ (CGSize)adjustOrigin:(CGSize)origin toTarget:(CGSize)target {
     
-    CGSize resultSize = CGSizeMake(originSize.width, originSize.height);
-    
+    CGSize size = CGSizeMake(origin.width, origin.height);
     /** 计算图片的比例 */
-    CGFloat widthPercent = (originSize.width ) / (targetSize.width);
-    CGFloat heightPercent = (originSize.height ) / targetSize.height;
+    CGFloat widthPercent = (origin.width ) / (target.width);
+    CGFloat heightPercent = (origin.height ) / target.height;
     if (widthPercent <= 1.0f && heightPercent <= 1.0f) {
-        resultSize = CGSizeMake(originSize.width, originSize.height);
+        size = CGSizeMake(origin.width, origin.height);
     } else if (widthPercent > 1.0f && heightPercent < 1.0f) {
-        
-        resultSize = CGSizeMake(targetSize.width, (originSize.height * targetSize.width) / originSize.width);
-    }else if (widthPercent <= 1.0f && heightPercent > 1.0f) {
-        
-        resultSize = CGSizeMake((targetSize.height * originSize.width) / originSize.height, targetSize.height);
-    }else {
+        size = CGSizeMake(target.width, (origin.height * target.width) / origin.width);
+    } else if (widthPercent <= 1.0f && heightPercent > 1.0f) {
+        size = CGSizeMake((target.height * origin.width) / origin.height, target.height);
+    } else {
         if (widthPercent > heightPercent) {
-            resultSize = CGSizeMake(targetSize.width, (originSize.height * targetSize.width) / originSize.width);
-        }else {
-            resultSize = CGSizeMake((targetSize.height * originSize.width) / originSize.height, targetSize.height);
+            size = CGSizeMake(target.width, (origin.height * target.width) / origin.width);
+        } else {
+            size = CGSizeMake((target.height * origin.width) / origin.height, target.height);
         }
     }
-    return resultSize;
+    return size;
 }
 
 @end

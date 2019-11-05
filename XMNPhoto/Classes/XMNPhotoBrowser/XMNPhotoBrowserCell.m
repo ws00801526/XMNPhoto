@@ -53,13 +53,15 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     /** 如果已经下载完毕 直接显示图片 不再去下载 */
     if (item.image) {
         self.imageView.image = item.image;
-        [self resizeSubviewsUsingSize:item.image.size];
+        CGSize size = CGSizeMake(item.image.size.width * item.image.scale, item.image.size.height * item.image.scale);
+        if (!CGSizeEqualToSize(item.imageSize, size)) { [self resizeSubviewsUsingSize:size]; }
         return;
     }
     
     if (![NSURL URLWithString:item.imagePath]) {
         [self.imageView setImage:item.thumbnail];
-        [self resizeSubviewsUsingSize:item.thumbnail.size];
+        CGSize size = CGSizeMake(item.thumbnail.size.width * item.thumbnail.scale, item.thumbnail.size.height * item.thumbnail.scale);
+        if (!CGSizeEqualToSize(item.imageSize, size)) { [self resizeSubviewsUsingSize:size]; }
         return;
     }
     
@@ -114,8 +116,8 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 
 - (void)resizeSubviewsUsingSize:(CGSize)originSize {
     
-    CGSize size = [XMNPhotoModel adjustOriginSize:originSize
-                                     toTargetSize:CGSizeMake(self.bounds.size.width - kXMNPhotoBrowserCellPadding, self.bounds.size.height)];
+    CGSize size = [XMNPhotoModel adjustOrigin:originSize
+                                     toTarget:CGSizeMake(self.bounds.size.width - kXMNPhotoBrowserCellPadding, self.bounds.size.height)];
     if (CGSizeEqualToSize(self.imageView.frame.size, size)) {
 #if DEBUG
         NSLog(@"resize is equal last will ignored");
@@ -142,7 +144,7 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     
     if (self.scrollView.zoomScale > 1.0f) {
         [self.scrollView setZoomScale:1.0 animated:YES];
-    }else {
+    } else {
         CGPoint touchPoint = [doubleTap locationInView:self.imageView];
         CGFloat newZoomScale = self.scrollView.maximumZoomScale;
         CGFloat xsize = self.frame.size.width / newZoomScale;
@@ -160,7 +162,6 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 #pragma mark - UIScrollViewDelegate
 
 - (nullable UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-    
     return self.containerView;
 }
 

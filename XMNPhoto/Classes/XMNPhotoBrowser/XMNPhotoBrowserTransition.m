@@ -60,8 +60,8 @@
             
             XMNPhotoModel *photo = [toVC.photos objectAtIndex:toVC.currentItemIndex];
             
-            CGSize size = [XMNPhotoModel adjustOriginSize:photo.imageSize
-                                             toTargetSize:toVC.view.bounds.size];
+            CGSize size = [XMNPhotoModel adjustOrigin:photo.imageSize
+                                             toTarget:toVC.view.bounds.size];
             snapShotView.frame = CGRectMake(0, 0, size.width, size.height);
             snapShotView.center = containerView.center;
             snapShotView.layer.cornerRadius = .0f;
@@ -94,8 +94,8 @@
     XMNPhotoModel *photo = [toVC.photos objectAtIndex:toVC.currentItemIndex];
     snapShotView.image =   photo.image ? : photo.thumbnail;
 
-    CGSize size = [XMNPhotoModel adjustOriginSize:photo.imageSize
-                                     toTargetSize:toVC.view.bounds.size];
+    CGSize size = [XMNPhotoModel adjustOrigin:photo.imageSize
+                                     toTarget:toVC.view.bounds.size];
     snapShotView.frame = CGRectMake(0, 0, size.width, size.height);
     snapShotView.center = containerView.center;
     

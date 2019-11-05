@@ -103,29 +103,27 @@
     return img;
 }
 
-- (CGSize)xmn_fittedSizeForTargetSize:(CGSize)targetSize {
+- (CGSize)xmn_fittedSizeForTargetSize:(CGSize)target {
     
-    CGSize originSize = self.size;
-    CGSize resultSize = CGSizeMake(originSize.width, originSize.height);
+    CGSize origin = CGSizeApplyAffineTransform(self.size, CGAffineTransformMakeScale(self.scale, self.scale));
+    CGSize result = CGSizeMake(origin.width, origin.height);
     
     /** 计算图片的比例 */
-    CGFloat widthPercent = (originSize.width ) / (targetSize.width);
-    CGFloat heightPercent = (originSize.height ) / targetSize.height;
+    CGFloat widthPercent = (origin.width ) / (target.width);
+    CGFloat heightPercent = (origin.height ) / target.height;
     if (widthPercent <= 1.0f && heightPercent <= 1.0f) {
-        resultSize = CGSizeMake(originSize.width, originSize.height);
+        result = CGSizeMake(origin.width, origin.height);
     } else if (widthPercent > 1.0f && heightPercent < 1.0f) {
-        
-        resultSize = CGSizeMake(targetSize.width, (originSize.height * targetSize.width) / originSize.width);
-    }else if (widthPercent <= 1.0f && heightPercent > 1.0f) {
-        
-        resultSize = CGSizeMake((targetSize.height * originSize.width) / originSize.height, targetSize.height);
-    }else {
+        result = CGSizeMake(target.width, (origin.height * target.width) / origin.width);
+    } else if (widthPercent <= 1.0f && heightPercent > 1.0f) {
+        result = CGSizeMake((target.height * origin.width) / origin.height, target.height);
+    } else {
         if (widthPercent > heightPercent) {
-            resultSize = CGSizeMake(targetSize.width, (originSize.height * targetSize.width) / originSize.width);
-        }else {
-            resultSize = CGSizeMake((targetSize.height * originSize.width) / originSize.height, targetSize.height);
+            result = CGSizeMake(target.width, (origin.height * target.width) / origin.width);
+        } else {
+            result = CGSizeMake((target.height * origin.width) / origin.height, target.height);
         }
     }
-    return resultSize;
+    return result;
 }
 @end

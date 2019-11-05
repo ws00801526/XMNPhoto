@@ -219,9 +219,7 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
     
     _currentItemIndex = currentItemIndex;
     
-    if (self.hasFirstBrowserItemIndex) {
-        return;
-    }
+    if (self.hasFirstBrowserItemIndex) { return; }
     
     self.hasFirstBrowserItemIndex = YES;
     self.firstBrowserItemIndex = currentItemIndex;

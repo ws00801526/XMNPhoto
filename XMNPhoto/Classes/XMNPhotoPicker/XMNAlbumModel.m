@@ -64,7 +64,7 @@
         else if ([name containsString:@"Videos"])  newName = @"视频";
         else newName = name;
         return newName;
-    }else {
+    } else {
         return name;
     }
 }

@@ -42,6 +42,6 @@
  @param targetSize 最大显示区域
  @return 计算后的显示区域
  */
-+ (CGSize)adjustOriginSize:(CGSize)originSize toTargetSize:(CGSize)targetSize;
++ (CGSize)adjustOrigin:(CGSize)originSize toTarget:(CGSize)targetSize;
 
 @end
