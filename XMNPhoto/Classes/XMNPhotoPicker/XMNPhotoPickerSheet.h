@@ -42,7 +42,7 @@
  *  originView      显示图片的view 注意是UIView类型 要获取其imageView 可以通过 [originView viewWithTag:999];
  *  completedBlock  执行完didSendAsset后 需要执行的一个block
  */
-@property (nonatomic, copy, nullable)   void(^didSendAsset)(XMNAssetModel * _Nonnull asset, UIView * _Nonnull originView, void(^ _Nonnull completedBlock)());
+@property (nonatomic, copy, nullable)   void(^didSendAsset)(XMNAssetModel * _Nonnull asset, UIView * _Nonnull originView, void(^ _Nonnull completedBlock)(void));
 
 + (instancetype _Nonnull )sharePhotoPicker ;
 - (instancetype _Nullable )initWithMaxCount:(NSUInteger)maxCount;

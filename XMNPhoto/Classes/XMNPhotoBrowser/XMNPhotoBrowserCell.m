@@ -53,11 +53,13 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     /** 如果已经下载完毕 直接显示图片 不再去下载 */
     if (item.image) {
         self.imageView.image = item.image;
+        [self resizeSubviewsUsingSize:item.image.size];
         return;
     }
     
     if (![NSURL URLWithString:item.imagePath]) {
         [self.imageView setImage:item.thumbnail];
+        [self resizeSubviewsUsingSize:item.thumbnail.size];
         return;
     }
     
@@ -69,7 +71,8 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
                             completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
                                 if (!error && image) {
                                     __strong typeof(wSelf) self = wSelf;
-                                    [self resizeSubviewsUsingSize:image.size];
+                                    CGSize size = CGSizeMake(image.size.width * image.scale, image.size.height * image.scale);
+                                    [self resizeSubviewsUsingSize:size];
                                 }
                             }];
 }
