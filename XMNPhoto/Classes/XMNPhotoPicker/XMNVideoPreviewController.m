@@ -110,10 +110,6 @@
     [playButton setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/video_preview_play_highlight" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil] forState:UIControlStateSelected];
     [playButton addTarget:self action:@selector(_handlePlayAciton) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.playButton = playButton];
-    
-    
-    
-    
 }
 
 - (void)_setupBottomBar {

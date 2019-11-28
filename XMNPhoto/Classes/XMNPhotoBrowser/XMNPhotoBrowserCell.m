@@ -21,7 +21,7 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) YYAnimatedImageView *imageView;
-
+@property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 @end
 
 @implementation XMNPhotoBrowserCell
@@ -37,6 +37,10 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     return self;
 }
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [self.indicatorView stopAnimating];
+}
 
 #pragma mark - Methods
 
@@ -65,22 +69,25 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
         return;
     }
     
+    if (item.thumbnail == nil) [self.indicatorView startAnimating];
     [self.imageView yy_setImageWithURL:[NSURL URLWithString:item.imagePath]
                            placeholder:item.thumbnail
                                options:YYWebImageOptionSetImageWithFadeAnimation
                               progress:NULL
                              transform:nil
                             completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+                                __strong typeof(wSelf) self = wSelf;
                                 if (!error && image) {
-                                    __strong typeof(wSelf) self = wSelf;
                                     CGSize size = CGSizeMake(image.size.width * image.scale, image.size.height * image.scale);
                                     [self resizeSubviewsUsingSize:size];
                                 }
+                                [self.indicatorView stopAnimating];
                             }];
 }
 
 - (void)cancelImageRequest {
 
+    [self.indicatorView stopAnimating];
     [self.imageView yy_cancelCurrentImageRequest];
     [self.imageView yy_cancelCurrentHighlightedImageRequest];
 }
@@ -96,6 +103,7 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     [self.containerView addSubview:self.imageView];
     [self.scrollView addSubview:self.containerView];
     [self.contentView addSubview:self.scrollView];
+    [self.contentView addSubview:self.indicatorView];
 
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
     
@@ -215,6 +223,20 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _imageView;
+}
+
+- (UIActivityIndicatorView *)indicatorView {
+    if (!_indicatorView) {
+        if (@available(iOS 13.0, *))  {
+            _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+        } else {
+            _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        }
+        _indicatorView.color = [UIColor whiteColor];
+        _indicatorView.hidesWhenStopped = YES;
+        _indicatorView.center = self.contentView.center;
+    }
+    return _indicatorView;
 }
 
 @end
