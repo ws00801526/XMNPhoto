@@ -33,16 +33,6 @@
 
 #pragma mark - Getters
 
-- (UIImage *)thumbnail {
-    
-    if (!_thumbnail || ![_thumbnail isKindOfClass:[UIImage class]]) {
-        
-        return [YYImage yy_imageWithColor:[UIColor blackColor]
-                                     size:CGSizeMake([UIScreen mainScreen].bounds.size.width, 400)];
-    }
-    return _thumbnail;
-}
-
 - (CGSize)imageSize {
     
     if (CGSizeEqualToSize(_imageSize, CGSizeZero)) {

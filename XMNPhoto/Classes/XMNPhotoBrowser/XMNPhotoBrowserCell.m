@@ -69,7 +69,7 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
         return;
     }
     
-    if (item.thumbnail == nil) [self.indicatorView startAnimating];
+    if (!item.thumbnail) [self.indicatorView startAnimating];
     [self.imageView yy_setImageWithURL:[NSURL URLWithString:item.imagePath]
                            placeholder:item.thumbnail
                                options:YYWebImageOptionSetImageWithFadeAnimation
@@ -80,13 +80,12 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
                                 if (!error && image) {
                                     CGSize size = CGSizeMake(image.size.width * image.scale, image.size.height * image.scale);
                                     [self resizeSubviewsUsingSize:size];
+                                    [self.indicatorView stopAnimating];
                                 }
-                                [self.indicatorView stopAnimating];
                             }];
 }
 
 - (void)cancelImageRequest {
-
     [self.indicatorView stopAnimating];
     [self.imageView yy_cancelCurrentImageRequest];
     [self.imageView yy_cancelCurrentHighlightedImageRequest];
