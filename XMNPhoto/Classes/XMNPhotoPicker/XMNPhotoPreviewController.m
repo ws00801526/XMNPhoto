@@ -121,13 +121,13 @@ static NSString * const kXMNPhotoPreviewIdentifier = @"XMNPhotoPreviewCell";
         [self.selectedAssets removeObject:self.assets[self.currentIndex]];
         self.assets[self.currentIndex].selected = NO;
         [self _updateTopBarStatus];
-    }else {
+    } else {
         if (self.selectedAssets.count < self.maxCount) {
             self.assets[self.currentIndex].selected = YES;
             [self.selectedAssets addObject:self.assets[self.currentIndex]];
             [self _updateTopBarStatus];
             [UIView animationWithLayer:self.stateButton.layer type:XMNAnimationTypeBigger];
-        }else {
+        } else {
             //TODO 超过最大数量
             [self showAlertWithMessage:[NSString stringWithFormat:@"最多只能选择%ld张照片",(unsigned long)self.maxCount]];
         }

@@ -112,7 +112,7 @@
     if ((self.imageRatio > .0f && self.imageRatio <= .25f) || (self.imageRatio >= 4.0f)) {
         /** 图片比例异常, 获取对应预览图时需要注意 */
         return self.originImage;
-    }else {
+    } else {
         
         [[XMNPhotoManager sharedManager] getPreviewImageWithAsset:self.asset completionBlock:^(UIImage *image) {
             resultImage = image;
@@ -218,7 +218,7 @@
         __block NSString *resultFilePath;
         if (self.filepath) {
             resultFilePath = [self.filepath lastPathComponent];
-        }else {
+        } else {
             [[XMNPhotoManager sharedManager] getAssetPathWithAsset:self.asset completionBlock:^(NSString * _Nullable info) {
                 resultFilePath = [info copy];
             }];

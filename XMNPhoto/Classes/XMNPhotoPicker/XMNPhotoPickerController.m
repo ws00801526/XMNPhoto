@@ -76,9 +76,7 @@
     
     if ([XMNPhotoManager sharedManager].authorizationStatus == PHAuthorizationStatusNotDetermined) {
         //未决定是否授权 -> 启动定时器
-        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-
-        }];
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) { }];
         [self performSelector:@selector(handleAuthorized) withObject:nil afterDelay:.1f];
         return;
     }
@@ -87,14 +85,12 @@
         //已授权
         [self autoPushPhotoCollectionViewController];
         [self.viewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-           
             if ([obj isKindOfClass:[XMNAlbumListController class]]) {
-                
                 [(XMNAlbumListController *)obj loadAlbums];
                 *stop =  YES;
             }
         }];
-    }else {
+    } else {
         //未授权
         [self showUnAuthorizedTips];
     }
@@ -128,9 +124,9 @@
 
         if (obj.previewImage) {
             [images addObject:obj.previewImage];
-        }else if (obj.originImage) {
+        } else if (obj.originImage) {
             [images addObject:obj.originImage];
-        }else if (obj.thumbnail) {
+        } else if (obj.thumbnail) {
             [images addObject:obj.thumbnail];
         }
     }];

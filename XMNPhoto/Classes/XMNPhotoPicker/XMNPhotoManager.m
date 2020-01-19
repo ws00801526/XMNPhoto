@@ -94,7 +94,7 @@
             PHFetchOptions *option = [[PHFetchOptions alloc] init];
             if (!pickingVideoEnable) {
                 option.predicate = [NSPredicate predicateWithFormat:@"mediaType = %ld", PHAssetMediaTypeImage];
-            }else {
+            } else {
                 option.predicate = [NSPredicate predicateWithFormat:@"mediaType = %ld", PHAssetMediaTypeVideo];
             }
             
@@ -111,7 +111,7 @@
 //            PHFetchOptions *option = [[PHFetchOptions alloc] init];
 //            if (!pickingVideoEnable) {
 //                option.predicate = [NSPredicate predicateWithFormat:@"mediaType = %ld", PHAssetMediaTypeImage];
-//            }else {
+//            } else {
 //                option.predicate = [NSPredicate predicateWithFormat:@"mediaType = %ld", PHAssetMediaTypeVideo];
 //            }
 //            
@@ -128,7 +128,7 @@
         [albumArr sortUsingComparator:^NSComparisonResult(XMNAlbumModel  *obj1, XMNAlbumModel *obj2) {
             if (obj1.count >= obj2.count) {
                 return NSOrderedAscending;
-            }else {
+            } else {
                 return NSOrderedDescending;
             }
         }];
@@ -215,7 +215,7 @@
     
     if (originType == PHAssetMediaTypeVideo) {
         return XMNAssetTypeVideo;
-    }else if (originType == PHAssetMediaTypeAudio) {
+    } else if (originType == PHAssetMediaTypeAudio) {
         return XMNAssetTypeAudio;
     }
     return XMNAssetTypePhoto;
@@ -339,7 +339,7 @@
     UIImage *thumbnail = [UIImage imageWithCGImage:[asset thumbnail]];
     if (size.width <= thumbnail.size.width && size.height <= thumbnail.size.height) {
         completionBlock ? completionBlock(thumbnail) : nil;
-    }else {
+    } else {
         [self getOriginImageWithAsset:asset completionBlock:^(UIImage * _Nullable image) {
             /** 或者直接返回原图 */
             completionBlock ? completionBlock(image) : nil;
@@ -412,7 +412,7 @@
         if (iOS9Later) {
             PHAssetResource *assetResource = [[PHAssetResource assetResourcesForAsset:asset] firstObject];
             completionBlock ? completionBlock(assetResource ? [assetResource originalFilename] : @"unknown") : nil;
-        }else {
+        } else {
             PHImageRequestOptions *imageRequestOptions = [[PHImageRequestOptions alloc] init];
             imageRequestOptions.synchronous = YES;
             [self.cachingImageManager requestImageDataForAsset:asset options:imageRequestOptions resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {

@@ -97,9 +97,9 @@ NSString *const kXMNStickSupplementaryViewKind = @"com.XMFraker.XMNStickLayout.k
         UICollectionViewLayoutAttributes *cellAttributes = self.itemAttributesArrayM[idx];
         if (!CGRectContainsPoint(visibleRect, cellAttributes.frame.origin)) {
             attributes.frame = CGRectMake(cellAttributes.frame.origin.x + cellAttributes.frame.size.width - attributes.size.width, cellAttributes.frame.origin.y, attributes.size.width, attributes.size.height);
-        }else if (!CGRectContainsPoint(visibleRect, CGPointMake(cellAttributes.frame.origin.x + cellAttributes.frame.size.width, cellAttributes.frame.origin.y))) {
+        } else if (!CGRectContainsPoint(visibleRect, CGPointMake(cellAttributes.frame.origin.x + cellAttributes.frame.size.width, cellAttributes.frame.origin.y))) {
             attributes.frame = CGRectMake(MAX(visibleRect.origin.x + visibleRect.size.width - attributes.size.width, cellAttributes.frame.origin.x), cellAttributes.frame.origin.y, attributes.size.width, attributes.size.height);
-        }else {
+        } else {
             attributes.frame = CGRectMake(cellAttributes.frame.origin.x + cellAttributes.frame.size.width - attributes.size.width, cellAttributes.frame.origin.y, attributes.size.width, attributes.size.height);
         }
     }];

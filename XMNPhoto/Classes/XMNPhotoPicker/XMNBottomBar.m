@@ -144,7 +144,7 @@
     if (self.selectOriginEnable) {
         self.originSizeLabel.text = [NSString stringWithFormat:@"原图 (%@)",[self _bytesStringFromDataLength:self.totalSize]];
         self.originSizeLabel.textColor = self.barType == XMNCollectionBottomBar ? [UIColor blackColor] : [UIColor whiteColor];
-    }else {
+    } else {
         self.originSizeLabel.text = @"原图";
         self.originSizeLabel.textColor = [UIColor lightGrayColor];
     }

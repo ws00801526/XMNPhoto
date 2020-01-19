@@ -149,12 +149,12 @@ static NSString * const kXMNAssetCellIdentifier = @"XMNAssetCell";
             if (asset.type == XMNAssetTypeVideo && self.selectedAssets.count > 0) {
                 [self showAlertWithMessage:@"同时选择视频和图片,视频将作为图片发送"];
                 return YES;
-            }else if (self.selectedAssets.count >= photoPickerC.maxCount) {
+            } else if (self.selectedAssets.count >= photoPickerC.maxCount) {
                 [self showAlertWithMessage:[NSString stringWithFormat:@"最多只能选择%ld张照片",(unsigned long)photoPickerC.maxCount]];
                 return NO;
             }
             return YES;
-        }else {
+        } else {
             return NO;
         }
     }];
@@ -165,7 +165,7 @@ static NSString * const kXMNAssetCellIdentifier = @"XMNAssetCell";
         if (selected) {
             [self.selectedAssets containsObject:asset] ? nil : [self.selectedAssets addObject:asset];
             asset.selected = YES;
-        }else {
+        } else {
             [self.selectedAssets containsObject:asset] ? [self.selectedAssets removeObject:asset] : nil;
             asset.selected = NO;
         }
@@ -191,7 +191,7 @@ static NSString * const kXMNAssetCellIdentifier = @"XMNAssetCell";
             [(XMNPhotoPickerController *)self.navigationController didFinishPickingVideo:asset];
         }];
         [self.navigationController pushViewController:videoPreviewC animated:YES];
-    }else {
+    } else {
         
         XMNPhotoPreviewController *previewC = [[XMNPhotoPreviewController alloc] initWithCollectionViewLayout:[XMNPhotoPreviewController photoPreviewViewLayoutWithSize:[UIScreen mainScreen].bounds.size]];
         previewC.assets = self.assets;

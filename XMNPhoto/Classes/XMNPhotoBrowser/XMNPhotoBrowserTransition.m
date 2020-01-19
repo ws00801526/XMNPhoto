@@ -34,7 +34,7 @@
         UIView * snapShotView;
         if ([toVC.sourceView isKindOfClass:[UIImageView class]]) {
             snapShotView = [[UIImageView alloc] initWithImage:[(UIImageView *)toVC.sourceView image]];
-        }else {
+        } else {
             snapShotView = [toVC.sourceView snapshotViewAfterScreenUpdates:YES];
         }
         snapShotView.clipsToBounds = YES;
@@ -74,7 +74,7 @@
             //告诉系统动画结束
             [transitionContext completeTransition:YES];
         }];
-    }else {
+    } else {
         /** sourceview 未设置 ,使用另外种转场方式 */
         [self normalPresentTranistionWithContext:transitionContext];
     }
@@ -188,7 +188,7 @@
             //告诉系统动画结束
             [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
         }];
-    }else {
+    } else {
         /** sourceview 未设置 ,使用另外种转场方式 */
         [self normalDismissTranistionWithContext:transitionContext];
     }

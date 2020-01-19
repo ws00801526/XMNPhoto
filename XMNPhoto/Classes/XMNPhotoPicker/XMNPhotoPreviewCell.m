@@ -39,7 +39,7 @@
     [self.scrollView setZoomScale:1.0f];
     if (item.isGIF) {
         self.imageView.image = [YYImage imageWithData:item.imageData scale:[UIScreen mainScreen].scale];
-    }else {
+    } else {
         self.imageView.image = item.previewImage;
     }
     [self _resizeSubviews];
@@ -89,7 +89,7 @@
     
     if (self.scrollView.zoomScale > 1.0f) {
         [self.scrollView setZoomScale:1.0 animated:YES];
-    }else {
+    } else {
         CGPoint touchPoint = [doubleTap locationInView:self.imageView];
         CGFloat newZoomScale = self.scrollView.maximumZoomScale;
         CGFloat xsize = self.frame.size.width / newZoomScale;

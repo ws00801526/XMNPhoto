@@ -115,25 +115,25 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         
         self.sendAssetStateDidChange ? self.sendAssetStateDidChange(self, self.tempView, XMNPhotoPickerWillSend) : nil;
         
-    }else if (longPressGes.state == UIGestureRecognizerStateChanged) {
+    } else if (longPressGes.state == UIGestureRecognizerStateChanged) {
         self.tempView.center = CGPointMake(self.tempView.center.x, MIN([longPressGes locationInView:self.keyWindow].y, self.startCenter.y));
         CGRect convertRect = [self.superview convertRect:self.superview.frame toView:self.keyWindow];
         if (CGRectContainsPoint(CGRectMake(0, convertRect.origin.y - self.tempView.bounds.size.height / 2, convertRect.size.width, convertRect.size.height + self.tempView.bounds.size.height / 2), self.tempView.center)) {
 
             self.tempTipsLabel.alpha = .0f;
             self.tempTipsLabel.hidden = YES;
-        }else {
+        } else {
             self.tempTipsLabel.hidden = NO;
             [UIView animateWithDuration:[XMNPhotoPickerOption sendingPictureAnimationDuration] animations:^{
                 self.tempTipsLabel.alpha = 1.f;
             }];
         }
-    }else {
+    } else {
         if (!self.tempTipsLabel.hidden) {
             self.tempTipsLabel.hidden = YES;
             /** 确定发送图片 */
             self.sendAssetStateDidChange ? self.sendAssetStateDidChange(self, self.tempView, XMNPhotoPickerSended) : nil;
-        }else {
+        } else {
             
             [UIView animateWithDuration:[XMNPhotoPickerOption sendingPictureAnimationDuration] delay:CGFLOAT_MIN options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction animations:^{
                 self.tempView.center = self.startCenter;
@@ -279,7 +279,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         UIScrollView *parentView = (UIScrollView *)self.parentController.view;
         self.contentViewBConstraint.constant = .0f;
         parentView.scrollEnabled = NO;
-    }else {
+    } else {
         self.contentViewBConstraint.constant = .0f;
     }
     
@@ -288,7 +288,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         [UIView animateWithDuration:.3 animations:^{
             [self layoutIfNeeded];
         }];
-    }else {
+    } else {
         [self layoutIfNeeded];
     }
     [self.collectionView reloadData];
@@ -309,7 +309,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
             [self removeFromSuperview];
         }];
         
-    }else {
+    } else {
         [self layoutIfNeeded];
         [self removeFromSuperview];
     }
@@ -347,7 +347,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         self.cameraButtonHConstarint.constant = 40;
         self.cameraButton.hidden = NO;
         self.cameraLineView.hidden = NO;
-    }else {
+    } else {
         self.cameraButton.hidden = YES;
         self.cameraLineView.hidden = YES;
         self.cameraButtonHConstarint.constant = 0;
@@ -421,15 +421,15 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         {
             if (self.selectedAssets.count == 1 && [self.selectedAssets firstObject].type == XMNAssetTypeVideo) {
                 self.didFinishPickingVideoBlock ? self.didFinishPickingVideoBlock([self.selectedAssets firstObject].previewImage,[self.selectedAssets firstObject]) : nil;
-            }else {
+            } else {
                 NSMutableArray *images = [NSMutableArray array];
                 [self.selectedAssets enumerateObjectsUsingBlock:^(XMNAssetModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
 
                     if (obj.previewImage) {
                         [images addObject:obj.previewImage];
-                    }else if (obj.originImage) {
+                    } else if (obj.originImage) {
                         [images addObject:obj.originImage];
-                    }else if (obj.thumbnail) {
+                    } else if (obj.thumbnail) {
                         [images addObject:obj.thumbnail];
                     }
                 }];
@@ -462,7 +462,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         self.photoLibraryButton.tag = kXMNPhotoLibrary;
         [self.photoLibraryButton setTitle:[NSString stringWithFormat:@"相册"] forState:UIControlStateNormal];
         [self.photoLibraryButton setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
-    }else {
+    } else {
         self.photoLibraryButton.tag = kXMNConfirm;
         [self.photoLibraryButton setTitle:[NSString stringWithFormat:@"确定(%d)",(int)self.selectedAssets.count] forState:UIControlStateNormal];
         [self.photoLibraryButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
@@ -510,18 +510,18 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         if (assetModel.type == XMNAssetTypeVideo) {
             if ([self.selectedAssets firstObject] && [self.selectedAssets firstObject].type != XMNAssetTypeVideo) {
                 [self.parentController showAlertWithMessage:@"不能同时选择照片和视频"];
-            }else if ([self.selectedAssets firstObject]){
+            } else if ([self.selectedAssets firstObject]){
                 [self.parentController showAlertWithMessage:@"一次只能发送1个视频"];
             }
             return;
-        }else if (self.selectedAssets.count >= self.maxCount) {
+        } else if (self.selectedAssets.count >= self.maxCount) {
             [self.parentController showAlertWithMessage:[NSString stringWithFormat:@"一次最多只能选择%d张图片",(int)self.maxCount]];
             return;
         }
         [UIView animationWithLayer:button.layer type:XMNAnimationTypeBigger];
         assetModel.selected = YES;
         [self.selectedAssets addObject:assetModel];
-    }else {
+    } else {
         
         assetModel.selected = NO;
         [self.selectedAssets removeObject:assetModel];
@@ -552,7 +552,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
     XMNAssetModel *assetModel = [self.assets objectAtIndex:indexPath.row];
     if (assetModel.isGIF) {
         pickerCell.imageView.image = [YYImage imageWithData:assetModel.imageData scale:[UIScreen mainScreen].scale];
-    }else {
+    } else {
         pickerCell.imageView.image = assetModel.previewImage;
     }
     
@@ -624,7 +624,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
     CGFloat scale;
     if (CGSizeEqualToSize(CGSizeZero, size)) {
         scale = .5f;
-    }else {
+    } else {
         /** 增加最大宽度, 以及最小宽度限制 */
         scale = MIN((MAX((MAX(0, size.width - 10))/size.height, 0.3f)), 2.5f);
     }
@@ -652,7 +652,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
         }];
         self.hidden = YES;
         [self.parentController presentViewController:videoPreviewC animated:YES completion:nil];
-    }else {
+    } else {
         
         XMNPhotoPreviewController *previewC = [[XMNPhotoPreviewController alloc] initWithCollectionViewLayout:[XMNPhotoPreviewController photoPreviewViewLayoutWithSize:[UIScreen mainScreen].bounds.size]];
         previewC.assets = self.assets;
@@ -771,7 +771,7 @@ typedef NS_ENUM(NSUInteger, XMNPhotoPickerSendState) {
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         return 41 * 3 + 160 + 8;
-    }else {
+    } else {
         return 41 * 2  + 160 + 8;
     }
 }
