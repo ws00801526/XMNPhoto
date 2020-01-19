@@ -55,7 +55,7 @@
         self.originStateImageView.highlighted = NO;
         self.originSizeLabel.textColor = [UIColor lightGrayColor];
         self.originSizeLabel.text = @"原图";
-    }else {
+    } else {
         self.originStateImageView.highlighted = self.selectOriginEnable;
     }
     
@@ -109,7 +109,6 @@
     
     self.originStateImageView.highlighted = NO;
     
-
     [self.originStateImageView setImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/bottom_bar_origin_normal" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil]];
     [self.originStateImageView setHighlightedImage:[UIImage imageNamed:@"XMNPhotoPicker.bundle/bottom_bar_origin_selected" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil]];
     
@@ -129,7 +128,6 @@
     [self.confirmButton setTitleColor:[UIColor colorWithRed:(36/255.0) green:(159/255.0) blue:(230/255.0) alpha:1.0f] forState:UIControlStateNormal];
     [self.confirmButton setTitleColor:[UIColor colorWithRed:(36/255.0) green:(159/255.0) blue:(230/255.0) alpha:.5f] forState:UIControlStateDisabled];
     [self.confirmButton addTarget:self action:@selector(_handleConfirmAction) forControlEvents:UIControlEventTouchUpInside];
-    
 }
 
 - (void)_handleConfirmAction {
@@ -162,7 +160,7 @@
         bytes = [NSString stringWithFormat:@"%0.0fK",dataLength/1024.0];
     } else if (dataLength == .0f){
         bytes = @"";
-    }else {
+    } else {
         bytes = [NSString stringWithFormat:@"%zdB",dataLength];
     }
     return bytes;

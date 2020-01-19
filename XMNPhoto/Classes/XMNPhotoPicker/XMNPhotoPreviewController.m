@@ -104,8 +104,9 @@ static NSString * const kXMNPhotoPreviewIdentifier = @"XMNPhotoPreviewCell";
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.bottomBar attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f]];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.bottomBar attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.bottomBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:50.0f]];
+    CGFloat height = 50.f;
+    if (UIApplication.sharedApplication.statusBarFrame.size.height >= 44) { height = 75.f; }
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.bottomBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:height]];
 }
 
 - (void)_handleBackAction {
@@ -210,9 +211,9 @@ static NSString * const kXMNPhotoPreviewIdentifier = @"XMNPhotoPreviewCell";
 - (UIView *)topBar {
     if (!_topBar) {
         
-        CGFloat originY = iOS7Later ? 20 : 0;
-        BOOL iPhoneX = (((int)[UIScreen mainScreen].bounds.size.height == 812) ? YES : NO);
-        _topBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, (originY + 44 + (iPhoneX ? 22.0f : .0f)))];
+        BOOL iPhoneX = UIApplication.sharedApplication.statusBarFrame.size.height >= 44.f;
+        CGFloat const originY = iPhoneX ? 44.f : 20.f;
+        _topBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, iPhoneX ? 88.f : 64.f)];
         _topBar.backgroundColor = [UIColor colorWithRed:34/255.0f green:34/255.0f blue:34/255.0f alpha:.7f];
         
         UIButton *backButton  = [UIButton buttonWithType:UIButtonTypeCustom];
