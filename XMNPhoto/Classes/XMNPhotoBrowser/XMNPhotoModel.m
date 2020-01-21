@@ -64,9 +64,17 @@
     
     CGSize size = CGSizeMake(origin.width, origin.height);
     /** 计算图片的比例 */
+    CGFloat whPercent = origin.width / origin.height;
     CGFloat widthPercent = (origin.width ) / (target.width);
     CGFloat heightPercent = (origin.height ) / target.height;
-    if (widthPercent <= 1.0f && heightPercent <= 1.0f) {
+    
+    if (whPercent < 0.1f) {
+        CGFloat width = CGRectGetWidth(UIScreen.mainScreen.bounds);
+        size = CGSizeMake(width, width / whPercent);
+    } else if (whPercent > 10.f) {
+        CGFloat height = CGRectGetHeight(UIScreen.mainScreen.bounds) / 2.f;
+        size = CGSizeMake(height * whPercent, height);
+    } else if (widthPercent <= 1.0f && heightPercent <= 1.0f) {
         size = CGSizeMake(origin.width, origin.height);
     } else if (widthPercent > 1.0f && heightPercent < 1.0f) {
         size = CGSizeMake(target.width, (origin.height * target.width) / origin.width);
@@ -74,9 +82,11 @@
         size = CGSizeMake((target.height * origin.width) / origin.height, target.height);
     } else {
         if (widthPercent > heightPercent) {
-            size = CGSizeMake(target.width, (origin.height * target.width) / origin.width);
+            CGFloat height = (origin.height * target.width) / origin.width;
+            size = CGSizeMake(target.width, height);
         } else {
-            size = CGSizeMake((target.height * origin.width) / origin.height, target.height);
+            CGFloat width = target.height * origin.width / origin.height;
+            size = CGSizeMake(width, target.height);
         }
     }
     return size;

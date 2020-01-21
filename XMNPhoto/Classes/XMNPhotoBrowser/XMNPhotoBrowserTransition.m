@@ -52,19 +52,17 @@
         [containerView addSubview:snapShotView];
         
         //动起来。第二个控制器的透明度0~1；让截图SnapShotView的位置更新到最新；
-        
+        XMNPhotoModel *const photo = [toVC.photos objectAtIndex:toVC.currentItemIndex];
+        CGSize const size = [XMNPhotoModel adjustOrigin:photo.imageSize toTarget:toVC.view.bounds.size];
+        CGFloat const scale = size.width / size.height;
+        CGFloat const offsetY = UIApplication.sharedApplication.statusBarFrame.size.height;
         [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-            
             [containerView layoutIfNeeded];
             toVC.view.alpha = 1.0;
-            
-            XMNPhotoModel *photo = [toVC.photos objectAtIndex:toVC.currentItemIndex];
-            
-            CGSize size = [XMNPhotoModel adjustOrigin:photo.imageSize
-                                             toTarget:toVC.view.bounds.size];
-            snapShotView.frame = CGRectMake(0, 0, size.width, size.height);
-            snapShotView.center = containerView.center;
             snapShotView.layer.cornerRadius = .0f;
+            snapShotView.frame = CGRectMake(CGFLOAT_MIN, (scale < 0.1f) ? offsetY : CGFLOAT_MIN, size.width, size.height);
+            if (scale > 0.1f && scale <= 10.f) snapShotView.center = toVC.view.center;
+            else if (scale > 10.f) snapShotView.center = CGPointMake(snapShotView.center.x, toVC.view.center.y);
         } completion:^(BOOL finished) {
             
             //为了让回来的时候，cell上的图片显示，必须要让cell上的图片显示出来
@@ -92,14 +90,14 @@
     snapShotView.contentMode = UIViewContentModeScaleAspectFill;
     snapShotView.layer.masksToBounds = YES;
     XMNPhotoModel *photo = [toVC.photos objectAtIndex:toVC.currentItemIndex];
-    snapShotView.image =   photo.image ? : photo.thumbnail;
-
-    CGSize size = [XMNPhotoModel adjustOrigin:photo.imageSize
-                                     toTarget:toVC.view.bounds.size];
-    snapShotView.frame = CGRectMake(0, 0, size.width, size.height);
-    snapShotView.center = containerView.center;
+    snapShotView.image = photo.image ? : photo.thumbnail;
     
-    snapShotView.center = containerView.center;
+    CGSize size = [XMNPhotoModel adjustOrigin:photo.imageSize toTarget:toVC.view.bounds.size];
+    CGFloat const scale = size.width / size.height;
+    CGFloat const offsetY = CGRectGetHeight(UIApplication.sharedApplication.statusBarFrame);
+    snapShotView.frame = CGRectMake(CGFLOAT_MIN, (scale < 0.1f) ? offsetY : CGFLOAT_MIN, size.width, size.height);
+    if (scale > 0.1f && scale <= 10.f) snapShotView.center = toVC.view.center;
+    else if (scale > 10.f) snapShotView.center = CGPointMake(snapShotView.center.x, toVC.view.center.y);
     snapShotView.transform = CGAffineTransformMakeScale(.1f, .1f);
 
     //设置第二个控制器的位置、透明度
@@ -149,7 +147,6 @@
         /** 判断sourceview 是否设置了 */
         
         if (fromVC.currentItemIndex != fromVC.firstBrowserItemIndex) {
-            
             [self normalDismissTranistionWithContext:transitionContext];
             return;
         }
@@ -164,6 +161,10 @@
         snapShotView.contentMode = UIViewContentModeScaleAspectFill;
         snapShotView.clipsToBounds = YES;
         snapShotView.frame = [containerView convertRect:browserCell.imageView.frame fromView:browserCell.imageView.superview ? : fromVC.view];
+//        CGFloat const scale = CGRectGetWidth(snapShotView.bounds) / CGRectGetHeight(snapShotView.bounds);
+//        if (scale < 0.1f) snapShotView.layer.anchorPoint = CGPointMake(0.f, 0.5f);
+//        else if (scale > 10.f) snapShotView.layer.anchorPoint = CGPointMake(0.5f, 1.f);
+//        else snapShotView.contentMode = UIViewContentModeScaleAspectFill;
         
         /** 隐藏 返回的view */
         fromVC.sourceView.hidden = YES;
@@ -176,11 +177,11 @@
         [containerView addSubview:toVC.view];
         [containerView addSubview:snapShotView];
         
+        CGRect const frame = [containerView convertRect:fromVC.sourceView.frame fromView:fromVC.sourceView.superview ? : toVC.view];
         [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-            
             [containerView layoutIfNeeded];
             toVC.view.alpha = 1.f;
-            snapShotView.frame = [containerView convertRect:fromVC.sourceView.frame fromView:fromVC.sourceView.superview ? : toVC.view];
+            snapShotView.frame = frame;
         } completion:^(BOOL finished) {
             
             fromVC.sourceView.hidden = NO;

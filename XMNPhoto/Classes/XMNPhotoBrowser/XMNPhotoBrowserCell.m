@@ -68,7 +68,7 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
         if (!CGSizeEqualToSize(item.imageSize, size)) { [self resizeSubviewsUsingSize:size]; }
         return;
     }
-    
+
     if (!item.thumbnail) [self.indicatorView startAnimating];
     [self.imageView yy_setImageWithURL:[NSURL URLWithString:item.imagePath]
                            placeholder:item.thumbnail
@@ -99,6 +99,7 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     
     self.backgroundColor = self.contentView.backgroundColor = [UIColor blackColor];
     
+    [self.scrollView setContentOffset:CGPointZero];
     [self.containerView addSubview:self.imageView];
     [self.scrollView addSubview:self.containerView];
     [self.contentView addSubview:self.scrollView];
@@ -109,7 +110,6 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
     doubleTap.numberOfTapsRequired = 2;
     
-    [singleTap requireGestureRecognizerToFail:doubleTap];
     [self.contentView addGestureRecognizer:singleTap];
     [self.contentView addGestureRecognizer:doubleTap];
     
@@ -117,24 +117,19 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
     longPress.minimumPressDuration = .3f;
     [self.contentView addGestureRecognizer:longPress];
 
+    [singleTap requireGestureRecognizerToFail:doubleTap];
     [singleTap requireGestureRecognizerToFail:longPress];
     [doubleTap requireGestureRecognizerToFail:longPress];
 }
 
 - (void)resizeSubviewsUsingSize:(CGSize)originSize {
     
-    CGSize size = [XMNPhotoModel adjustOrigin:originSize
-                                     toTarget:CGSizeMake(self.bounds.size.width - kXMNPhotoBrowserCellPadding, self.bounds.size.height)];
-    if (CGSizeEqualToSize(self.imageView.frame.size, size)) {
-#if DEBUG
-        NSLog(@"resize is equal last will ignored");
-#endif
-        return;
-    }
-    
+    CGSize target = CGSizeMake(self.bounds.size.width - kXMNPhotoBrowserCellPadding, self.bounds.size.height);
+    CGSize size = [XMNPhotoModel adjustOrigin:originSize toTarget:target];
+    if (CGSizeEqualToSize(self.imageView.frame.size, size)) return;
     self.containerView.frame = CGRectMake(0, 0, size.width, size.height);
     self.scrollView.contentSize = CGSizeMake(MAX(self.frame.size.width - kXMNPhotoBrowserCellPadding, self.containerView.bounds.size.width), MAX(self.frame.size.height, self.containerView.bounds.size.height));
-    [self.scrollView scrollRectToVisible:self.bounds animated:NO];
+    [self.scrollView scrollRectToVisible:CGRectMake(0.f, 0.f, CGRectGetWidth(self.bounds) - kXMNPhotoBrowserCellPadding, CGRectGetHeight(self.bounds)) animated:NO];
     self.scrollView.alwaysBounceVertical = self.containerView.frame.size.height <= self.frame.size.height ? NO : YES;
     self.imageView.frame = self.containerView.bounds;
     [self scrollViewDidZoom:self.scrollView];
@@ -150,7 +145,7 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 - (void)handleDoubleTap:(UITapGestureRecognizer *)doubleTap {
     
     if (self.scrollView.zoomScale > 1.0f) {
-        [self.scrollView setZoomScale:1.0 animated:YES];
+        [self.scrollView setZoomScale:1.0f animated:YES];
     } else {
         CGPoint touchPoint = [doubleTap locationInView:self.imageView];
         CGFloat newZoomScale = self.scrollView.maximumZoomScale;
