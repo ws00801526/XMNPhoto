@@ -40,6 +40,12 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
     return self;
 }
 
+- (void)dealloc {
+#if DEBUG
+    NSLog(@"%@  dealloc", self);
+#endif
+}
+
 #pragma mark - Override Methods
 
 - (void)viewDidLoad {
@@ -66,29 +72,14 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
     }
 }
 
-- (BOOL)prefersStatusBarHidden {
-    
-    return NO;
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    
-    return UIStatusBarStyleLightContent;
-}
-
-- (void)dealloc {
-    
-#if DEBUG
-    NSLog(@"%@  dealloc",NSStringFromClass([self class]));
-#endif
-}
+- (BOOL)prefersStatusBarHidden { return NO; }
+- (UIStatusBarStyle)preferredStatusBarStyle { return UIStatusBarStyleLightContent; }
 
 /// ========================================
 /// @name   支持屏幕旋转功能
 /// ========================================
 
-- (void)viewWillTransitionToSize:(CGSize)size
-       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     
     
     NSInteger index = [[self.collectionView indexPathsForVisibleItems] firstObject].row;
@@ -134,19 +125,13 @@ static NSString * const kXMNPhotoBrowserCellIdentifier = @"com.XMFraker.XMNPhoto
                                                                   presentingController:(UIViewController *)presenting
                                                                       sourceController:(UIViewController *)source {
     
-    if (presented == self) {
-        
-        return [[XMNPhotoBrowserPresentTransition alloc] init];
-    }
+    if (presented == self) { return [[XMNPhotoBrowserPresentTransition alloc] init]; }
     return nil;
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
     
-    if (dismissed == self) {
-        
-        return [[XMNPhotoBrowserDismissTransition alloc] init];
-    }
+    if (dismissed == self) { return [[XMNPhotoBrowserDismissTransition alloc] init]; }
     return nil;
 }
 

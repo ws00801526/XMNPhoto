@@ -27,8 +27,7 @@
                     thumbnailData:(NSData *)thumnailData {
     
     return [self initWithImagePath:imagePath
-                         thumbnail:[[YYImage alloc] initWithData:thumnailData
-                                                           scale:[UIScreen mainScreen].scale]];
+                         thumbnail:[[YYImage alloc] initWithData:thumnailData scale:[UIScreen mainScreen].scale]];
 }
 
 #pragma mark - Getters
@@ -52,9 +51,7 @@
 
 - (UIImage *)image {
     
-    if (![self.imagePath hasPrefix:@"http"]) {
-        return [UIImage imageWithContentsOfFile:self.imagePath];
-    }
+    if (![self.imagePath hasPrefix:@"http"]) { return [UIImage imageWithContentsOfFile:self.imagePath]; }
     return [[YYWebImageManager sharedManager].cache getImageForKey:[[YYWebImageManager sharedManager] cacheKeyForURL:[NSURL URLWithString:self.imagePath]]];
 }
 

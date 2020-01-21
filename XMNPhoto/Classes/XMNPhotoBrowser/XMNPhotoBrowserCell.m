@@ -29,11 +29,8 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 #pragma mark - Life Cycle
 
 - (instancetype)initWithFrame:(CGRect)frame {
-    
-    if (self = [super initWithFrame:frame]) {
-        
-        [self setup];
-    }
+    self = [super initWithFrame:frame];
+    if (self) { [self setup]; }
     return self;
 }
 
@@ -201,7 +198,6 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 - (UIView *)containerView {
     
     if (!_containerView) {
-        
         _containerView = [[UIView alloc] initWithFrame:self.bounds];
         _containerView.clipsToBounds = YES;
     }
@@ -211,7 +207,6 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 - (UIImageView *)imageView {
     
     if (!_imageView) {
-        
         _imageView = [[YYAnimatedImageView alloc] initWithFrame:self.bounds];
         _imageView.clipsToBounds = YES;
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -220,6 +215,7 @@ CGFloat kXMNPhotoBrowserCellPadding = 16.f;
 }
 
 - (UIActivityIndicatorView *)indicatorView {
+    
     if (!_indicatorView) {
         if (@available(iOS 13.0, *))  {
             _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];

@@ -161,11 +161,7 @@
         snapShotView.contentMode = UIViewContentModeScaleAspectFill;
         snapShotView.clipsToBounds = YES;
         snapShotView.frame = [containerView convertRect:browserCell.imageView.frame fromView:browserCell.imageView.superview ? : fromVC.view];
-//        CGFloat const scale = CGRectGetWidth(snapShotView.bounds) / CGRectGetHeight(snapShotView.bounds);
-//        if (scale < 0.1f) snapShotView.layer.anchorPoint = CGPointMake(0.f, 0.5f);
-//        else if (scale > 10.f) snapShotView.layer.anchorPoint = CGPointMake(0.5f, 1.f);
-//        else snapShotView.contentMode = UIViewContentModeScaleAspectFill;
-        
+
         /** 隐藏 返回的view */
         fromVC.sourceView.hidden = YES;
         browserCell.hidden = YES;

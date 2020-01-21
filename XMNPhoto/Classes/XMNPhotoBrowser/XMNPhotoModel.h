@@ -32,8 +32,7 @@
  *
  *  @return XMNPhotoModel 实例
  */
-- (_Nonnull instancetype)initWithImagePath:(NSString * _Nonnull )imagePath
-                                 thumbnail:(UIImage * _Nullable )thumnail;
+- (_Nonnull instancetype)initWithImagePath:(NSString * _Nonnull )imagePath thumbnail:(UIImage * _Nullable )thumnail;
 
 /**
  获得适合当前屏幕显示的图片尺寸大小
