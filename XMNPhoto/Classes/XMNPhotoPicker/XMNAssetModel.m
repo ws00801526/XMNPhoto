@@ -168,6 +168,8 @@
 - (BOOL)isGIF {
     
 #ifdef kXMNPhotosAvailable
+    NSString *filename = [[[self asset] valueForKey:@"filename"] uppercaseString];
+    if (filename.length && [filename hasSuffix:@"GIF"]) return YES;
     return [(PHAsset *)self.asset mediaSubtypes] == 32;
 #else
     return NO;
